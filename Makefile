@@ -5,7 +5,6 @@ SRCS			=	main.c\
 					deal_key.c\
 					get_next_line.c\
 					get_next_line_utils.c\
-					save.c\
 					sprite_sort.c\
 					util_func.c
 OBJS_DIR		=	./objs
