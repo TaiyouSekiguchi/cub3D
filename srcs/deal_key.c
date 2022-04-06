@@ -47,5 +47,6 @@ int		deal_key(int key_code, t_game *game)
 		mlx_destroy_window(game->mlx, game->win);
 		exit(0);
 	}
+	mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
 	return (0);
 }

@@ -62,7 +62,6 @@ typedef struct	s_Sprite
 	int			texture;
 }				t_Sprite;
 
-
 #pragma pack(2)
 typedef struct	BITMAPFILEHEADER
 {
@@ -137,28 +136,24 @@ typedef struct	s_game
 	void		*mlx;
 	void		*win;
 	t_img		img;
+	t_img		imgs[11];
 	t_player	player;
 	t_file		file;
 	t_counter	map_cnt;
 	t_Sprite	*sprite;
 	int			**worldMap;
-	t_img		imgs[11];
-	//int			worldMap[mapWidth][mapHeight];
 }				t_game;
 
 
 unsigned int	create_trgb(int t, int r, int g, int b);
-u_int8_t			get_t(unsigned int trgb);
-u_int8_t			get_r(unsigned int trgb);
-u_int8_t			get_g(unsigned int trgb);
-u_int8_t			get_b(unsigned int trgb);
+u_int8_t		get_t(unsigned int trgb);
+u_int8_t		get_r(unsigned int trgb);
+u_int8_t		get_g(unsigned int trgb);
+u_int8_t		get_b(unsigned int trgb);
 
 void			sortSprites(int *order, double *dist, int amount);
 
-void			do_save(t_game *game);
-
 int				deal_key(int key_code, t_game *game);
-
 
 int				my_mlx_pixel_put(t_img *img, int x, int y, int color);
 int				my_close(t_game *game);

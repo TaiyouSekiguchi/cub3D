@@ -26,13 +26,15 @@ int		main_loop(t_game *game)
 	int			drawStart;
 	int			drawEnd;
 	unsigned int			color;
-	double		*ZBuffer;
+	
 	int			*spriteOrder;
 	double		*spriteDistance;
+	double		*ZBuffer;
 
 	spriteOrder = (int *)malloc(sizeof(int) * game->map_cnt.sprite_cnt);
 	spriteDistance = (double *)malloc(sizeof(double) * game->map_cnt.sprite_cnt);
 	ZBuffer = (double *)malloc(sizeof(double) * game->file.screenWidth);
+
 
 	unsigned int texture[11][texWidth * texHeight];
 	for (x = 0; x < 11; x++)
@@ -45,7 +47,6 @@ int		main_loop(t_game *game)
 
 	w = 640;
 	h = 480;
-	//img_init(game);
 
 	for (y = game->file.screenHeight / 2 + 1; y < game->file.screenHeight; ++y)
 	{
@@ -276,7 +277,7 @@ int		main_loop(t_game *game)
 		}
 	}
 	//do_save(game);
-	mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
+	//mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
 	free(spriteOrder);
 	free(spriteDistance);
 	free(ZBuffer);
