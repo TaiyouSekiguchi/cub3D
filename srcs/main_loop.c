@@ -274,8 +274,7 @@ int		main_loop(t_game *game)
 		}
 	}
 	*/
-	//do_save(game);
-	//mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
+	mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
 	//free(spriteOrder);
 	//free(spriteDistance);
 	free(ZBuffer);
