@@ -82,7 +82,7 @@ int		main(int argc, char *argv[])
 	make_map(&game, map_list, &news);
 	ft_lstclear(&list, free);
 
-	file_read_result(&game);
+	//file_read_result(&game);
 
 	decide_direction(&game, news);
 	mlx_hook(game.win, DESTROY_NOTIFY, 1L << 17, &my_close, &game);
