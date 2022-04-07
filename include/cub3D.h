@@ -42,65 +42,14 @@
 #define INFO_HEADER_SIZE 40
 #define DEFAULT_HEADER_SIZE (FILE_HEADER_SIZE + INFO_HEADER_SIZE)
 
-//#define screenWidth 640
-//#define screenHeight 480
-
 #define mapWidth 24
 #define mapHeight 24
-
 
 typedef struct	s_pair
 {
 	double		first;
 	int			second;
 }				t_pair;
-
-typedef struct	s_Sprite
-{
-	double		x;
-	double		y;
-	int			texture;
-}				t_Sprite;
-
-#pragma pack(2)
-typedef struct	BITMAPFILEHEADER
-{
-	u_int16_t	bfType;
-	u_int32_t	bfSize;
-	u_int16_t	bfReserved1;
-	u_int16_t	bfReserved2;
-	u_int32_t	bfOffBits;
-}				BITMAPFILEHEADER;
-#pragma pack()
-
-typedef struct	BITMAPINFOHEADER
-{
-	u_int32_t	biSize;
-	int32_t		biWidth;
-	int32_t		biHeight;
-	u_int16_t	biPlanes;
-	u_int16_t	biBitCount;
-	u_int32_t	biCompression;
-	u_int32_t	biSizeImage;
-	int32_t		biXPelsPerMeter;
-	int32_t		biYPelsPerMeter;
-	u_int32_t	biClrUsed;
-	u_int32_t	biClrImportant;
-}				BITMAPINFOHEADER;
-
-typedef struct	s_file
-{
-	int			screenWidth;
-	int			screenHeight;
-	int			floor;
-	int			ceil;
-	char		*north;
-	char		*south;
-	char		*east;
-	char		*west;
-	char		*sprite;
-	char		*map;
-}				t_file;
 
 typedef struct	s_img
 {
@@ -116,48 +65,67 @@ typedef struct	s_img
 
 typedef struct	s_player
 {
-	double		posX;
-	double		posY;
-	double		dirX;
-	double		dirY;
-	double		planeX;
-	double		planeY;
+	double		pos_x;
+	double		pos_y;
+	double		dir_x;
+	double		dir_y;
+	double		plane_x;
+	double		plane_y;
 }				t_player;
-
-typedef struct	s_counter
-{
-	int			map_max_len;
-	int			map_line_cnt;
-	int			sprite_cnt;
-}				t_counter;
 
 typedef struct	s_game
 {
 	void		*mlx;
 	void		*win;
-	t_img		img;
-	t_img		imgs[11];
+	int			screen_width;
+	int			screen_height;
+	int			**world_map;
+	int			row;
+	int			col;
 	t_player	player;
-	t_file		file;
-	t_counter	map_cnt;
-	t_Sprite	*sprite;
-	int			**worldMap;
+	t_img		img;
+	t_img		imgs[4];
+	int			floor;
+	int			ceil;
 }				t_game;
 
-
+//prototype declare (filename alphabet order)
+//color.c
 unsigned int	create_trgb(int t, int r, int g, int b);
 u_int8_t		get_t(unsigned int trgb);
 u_int8_t		get_r(unsigned int trgb);
 u_int8_t		get_g(unsigned int trgb);
 u_int8_t		get_b(unsigned int trgb);
 
-void			sortSprites(int *order, double *dist, int amount);
-
+//deal_key.c
 int				deal_key(int key_code, t_game *game);
 
-int				my_mlx_pixel_put(t_img *img, int x, int y, int color);
-int				my_close(t_game *game);
+//error_exit.c
+void			error_exit(char *cmd, char *msg);
+
+//init.c
+void			game_init(t_game *game);
+
+//extension_check.c
+int				extension_check(char *file_path);
+
+//game_free.c
+void			game_free(t_game *game);
+
+//main_loop.c
 int				main_loop(t_game *game);
 
+//make_map.c
+void			make_map(t_game *game, t_list *list, char *news);
+
+//read_file.c
+void			read_file(char *file_name, t_list **list);
+
+//texture_and_color_parse.c
+t_list			*texture_and_color_parse(t_game *game, t_list *list);
+
+//utils.c
+int				my_mlx_pixel_put(t_img *img, int x, int y, int color);
+int				my_close(t_game *game);
 
 #endif

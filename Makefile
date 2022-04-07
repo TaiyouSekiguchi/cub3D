@@ -1,12 +1,19 @@
 NAME			=	cub3D
 SRCS			=	main.c\
-					main_loop.c\
 					color.c\
 					deal_key.c\
+					error_exit.c\
+					extension_check.c\
+					game_free.c\
 					get_next_line.c\
 					get_next_line_utils.c\
-					sprite_sort.c\
-					util_func.c
+					init.c\
+					main_loop.c\
+					make_map.c\
+					read_file.c\
+					texture_and_color_parse.c\
+					utils.c
+
 OBJS_DIR		=	./objs
 OBJS			=	$(addprefix $(OBJS_DIR)/, $(SRCS:.c=.o))
 

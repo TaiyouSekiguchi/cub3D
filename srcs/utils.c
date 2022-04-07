@@ -10,6 +10,7 @@ int		my_mlx_pixel_put(t_img *img, int x, int y, int color)
 
 int		my_close(t_game *game)
 {
-	mlx_destroy_window(game->mlx, game->win);
+	game_free(game);
+	//mlx_destroy_window(game->mlx, game->win);
 	exit(0);
 }

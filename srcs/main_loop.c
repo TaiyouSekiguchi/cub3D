@@ -27,17 +27,13 @@ int		main_loop(t_game *game)
 	int			drawEnd;
 	unsigned int			color;
 	
-	int			*spriteOrder;
-	double		*spriteDistance;
 	double		*ZBuffer;
 
-	spriteOrder = (int *)malloc(sizeof(int) * game->map_cnt.sprite_cnt);
-	spriteDistance = (double *)malloc(sizeof(double) * game->map_cnt.sprite_cnt);
-	ZBuffer = (double *)malloc(sizeof(double) * game->file.screenWidth);
+	ZBuffer = (double *)malloc(sizeof(double) * game->screen_width);
 
 
-	unsigned int texture[11][texWidth * texHeight];
-	for (x = 0; x < 11; x++)
+	unsigned int texture[4][texWidth * texHeight];
+	for (x = 0; x < 4; x++)
 	{
 		for (y = 0; y < texWidth * texHeight; y++)
 		{
@@ -48,26 +44,26 @@ int		main_loop(t_game *game)
 	w = 640;
 	h = 480;
 
-	for (y = game->file.screenHeight / 2 + 1; y < game->file.screenHeight; ++y)
+	for (y = game->screen_height / 2 + 1; y < game->screen_height; ++y)
 	{
-		float rayDirX0 = game->player.dirX - game->player.planeX;
-		float rayDirY0 = game->player.dirY - game->player.planeY;
-		float rayDirX1 = game->player.dirX + game->player.planeX;
-		float rayDirY1 = game->player.dirY + game->player.planeY;
+		float rayDirX0 = game->player.dir_x - game->player.plane_x;
+		float rayDirY0 = game->player.dir_y - game->player.plane_y;
+		float rayDirX1 = game->player.dir_x + game->player.plane_x;
+		float rayDirY1 = game->player.dir_y + game->player.plane_y;
 
-		int p = y - game->file.screenHeight /2;
+		int p = y - game->screen_height /2;
 
-		float posZ = 0.5 * game->file.screenHeight;
+		float posZ = 0.5 * game->screen_height;
 
 		float rowDistance = posZ / p;
 
-		float floorStepX = rowDistance * (rayDirX1 - rayDirX0) / game->file.screenWidth;
-		float floorStepY = rowDistance * (rayDirY1 - rayDirY0) / game->file.screenWidth;
+		float floorStepX = rowDistance * (rayDirX1 - rayDirX0) / game->screen_width;
+		float floorStepY = rowDistance * (rayDirY1 - rayDirY0) / game->screen_width;
 
-		float floorX = game->player.posX + rowDistance * rayDirX0;
-		float floorY = game->player.posY + rowDistance * rayDirY0;
+		float floorX = game->player.pos_x + rowDistance * rayDirX0;
+		float floorY = game->player.pos_y + rowDistance * rayDirY0;
       
-		for(x = 0; x < game->file.screenWidth; ++x)
+		for(x = 0; x < game->screen_width; ++x)
 		{
 			// the cell coord is simply got from the integer parts of floorX and floorY
 			int cellX = (int)(floorX);
@@ -90,28 +86,28 @@ int		main_loop(t_game *game)
 			// floor
 			//color = texture[floorTexture][texWidth * ty + tx];
 			//color = 0x00FF0000;
-			color = game->file.floor;
+			color = game->floor;
 			//color = (color >> 1) & 8355711; // make a bit darker
 			my_mlx_pixel_put(&game->img, x, y, color);
 			//buffer[y][x] = color;
 			
-			//ceiling (symmetrical, at screenHeight - y - 1 instead of y)
+			//ceiling (symmetrical, at screen_height - y - 1 instead of y)
 			//color = texture[ceilingTexture][texWidth * ty + tx];
 			//color = 0x00FF0000;
-			color = game->file.ceil;
+			color = game->ceil;
 			//color = (color >> 1) & 8355711; // make a bit darker
-			my_mlx_pixel_put(&game->img, x, game->file.screenHeight - y - 1, color);
-			//buffer[screenHeight - y - 1][x] = color;
+			my_mlx_pixel_put(&game->img, x, game->screen_height - y - 1, color);
+			//buffer[screen_height - y - 1][x] = color;
 		}
 	}
 
 	for (x = 0; x < w; x++)
 	{
 		cameraX = 2 * x / (double)w - 1;
-		rayDirX = game->player.dirX + game->player.planeX * cameraX;
-		rayDirY = game->player.dirY + game->player.planeY * cameraX;
-		mapX = (int)game->player.posX;
-		mapY = (int)game->player.posY;
+		rayDirX = game->player.dir_x + game->player.plane_x * cameraX;
+		rayDirY = game->player.dir_y + game->player.plane_y * cameraX;
+		mapX = (int)game->player.pos_x;
+		mapY = (int)game->player.pos_y;
 		deltaDistX = fabs(1 / rayDirX);
 		deltaDistY = fabs(1 / rayDirY);
 		hit = 0;
@@ -119,23 +115,23 @@ int		main_loop(t_game *game)
 		if (rayDirX < 0)
 		{
 			stepX = -1;
-			sideDistX = (game->player.posX - mapX) * deltaDistX;
+			sideDistX = (game->player.pos_x - mapX) * deltaDistX;
 		}
 		else
 		{
 			stepX = 1;
-			sideDistX = (mapX + 1.0 - game->player.posX) * deltaDistX;
+			sideDistX = (mapX + 1.0 - game->player.pos_x) * deltaDistX;
 		}
 
 		if (rayDirY < 0)
 		{
 			stepY = -1;
-			sideDistY = (game->player.posY - mapY) * deltaDistY;
+			sideDistY = (game->player.pos_y - mapY) * deltaDistY;
 		}
 		else
 		{
 			stepY = 1;
-			sideDistY = (mapY + 1.0 - game->player.posY) * deltaDistY;
+			sideDistY = (mapY + 1.0 - game->player.pos_y) * deltaDistY;
 		}
 
 		while (hit == 0)
@@ -152,14 +148,14 @@ int		main_loop(t_game *game)
 				mapY += stepY;
 				side = 1;
 			}
-			if (game->worldMap[mapX][mapY] > 0)
+			if (game->world_map[mapX][mapY] > 0)
 				hit = 1;
 		}
 
 		if (side == 0)
-			perpWallDist = (mapX - game->player.posX + (1 - stepX) / 2) / rayDirX;
+			perpWallDist = (mapX - game->player.pos_x + (1 - stepX) / 2) / rayDirX;
 		else
-			perpWallDist = (mapY - game->player.posY + (1 - stepY) / 2) / rayDirY;
+			perpWallDist = (mapY - game->player.pos_y + (1 - stepY) / 2) / rayDirY;
 		lineHeight = (int)(h / perpWallDist);
 
 		drawStart = -lineHeight / 2 + h / 2;
@@ -169,7 +165,7 @@ int		main_loop(t_game *game)
 		if (drawEnd >= h)
 			drawEnd = h - 1;
 
-		//int texNum = game->worldMap[mapX][mapY] - 1;
+		//int texNum = game->world_map[mapX][mapY] - 1;
 		int texNum;
 		if (side == 0)
 		{
@@ -188,9 +184,9 @@ int		main_loop(t_game *game)
 
 		double wallX;
 		if (side == 0)
-			wallX = game->player.posY + perpWallDist * rayDirY;
+			wallX = game->player.pos_y + perpWallDist * rayDirY;
 		else
-			wallX = game->player.posX + perpWallDist * rayDirX;
+			wallX = game->player.pos_x + perpWallDist * rayDirX;
 		wallX -= floor((wallX));
 
 		int texX = (int)(wallX * (double)(texWidth));
@@ -215,23 +211,24 @@ int		main_loop(t_game *game)
 		ZBuffer[x] = perpWallDist;
 	}
 
+	/*
 	for (int i = 0; i < game->map_cnt.sprite_cnt; i++)
 	{
 		spriteOrder[i] = i;
-		spriteDistance[i] = ((game->player.posX - game->sprite[i].x) * (game->player.posX - game->sprite[i].x) + (game->player.posY - game->sprite[i].y) * (game->player.posY - game->sprite[i].y));
+		spriteDistance[i] = ((game->player.pos_x - game->sprite[i].x) * (game->player.pos_x - game->sprite[i].x) + (game->player.pos_y - game->sprite[i].y) * (game->player.pos_y - game->sprite[i].y));
 	}
 
 	sortSprites(spriteOrder, spriteDistance, game->map_cnt.sprite_cnt);
 
 	for (int i = 0; i < game->map_cnt.sprite_cnt; i++)
 	{
-		double spriteX = game->sprite[spriteOrder[i]].x - game->player.posX;
-		double spriteY = game->sprite[spriteOrder[i]].y - game->player.posY;
+		double spriteX = game->sprite[spriteOrder[i]].x - game->player.pos_x;
+		double spriteY = game->sprite[spriteOrder[i]].y - game->player.pos_y;
 
-		double invDet = 1.0 / (game->player.planeX * game->player.dirY - game->player.dirX * game->player.planeY);
+		double invDet = 1.0 / (game->player.plane_x * game->player.dir_y - game->player.dir_x * game->player.plane_y);
 
-		double transformX = invDet * (game->player.dirY * spriteX - game->player.dirX * spriteY);
-		double transformY = invDet * (-game->player.planeY * spriteX + game->player.planeX * spriteY);
+		double transformX = invDet * (game->player.dir_y * spriteX - game->player.dir_x * spriteY);
+		double transformY = invDet * (-game->player.plane_y * spriteX + game->player.plane_x * spriteY);
 
 		int spriteScreenX = (int)((w / 2) * (1 + transformX / transformY));
 
@@ -276,10 +273,11 @@ int		main_loop(t_game *game)
 			}
 		}
 	}
+	*/
 	//do_save(game);
 	//mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
-	free(spriteOrder);
-	free(spriteDistance);
+	//free(spriteOrder);
+	//free(spriteDistance);
 	free(ZBuffer);
 	return (0);
 }

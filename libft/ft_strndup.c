@@ -1,33 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strrchr.c                                       :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsekiguc <tsekiguc@student.42tokyo.jp      +#+  +:+       +#+        */
+/*   By: tsekiguc <tsekiguc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/14 19:40:16 by tsekiguc          #+#    #+#             */
-/*   Updated: 2021/08/18 11:48:57 by tsekiguc         ###   ########.fr       */
+/*   Created: 2022/01/06 22:25:28 by tsekiguc          #+#    #+#             */
+/*   Updated: 2022/01/06 22:29:59 by tsekiguc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strrchr(const char *s, int c)
+char	*ft_strndup(const char *s1, size_t n)
 {
 	char	*ret;
-	char	cc;
 	size_t	len;
 	size_t	i;
 
-	ret = NULL;
-	cc = (char)c;
-	len = ft_strlen(s);
+	if (s1 == NULL || n == 0)
+		return (NULL);
+	len = ft_strlen(s1);
+	if (len > n)
+		len = n;
+	ret = (char *)malloc(sizeof(char) * (len + 1));
+	if (ret == NULL)
+		return (NULL);
 	i = 0;
-	while (i <= len)
+	while (s1[i] != '\0' && i < n)
 	{
-		if (s[i] == cc)
-			ret = (char *)&s[i];
+		ret[i] = s1[i];
 		i++;
 	}
+	ret[i] = '\0';
 	return (ret);
 }

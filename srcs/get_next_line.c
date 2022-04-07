@@ -1,115 +1,113 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tsekiguc <tsekiguc@student.42tokyo.>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/07/13 10:31:37 by tsekiguc          #+#    #+#             */
+/*   Updated: 2021/12/13 09:00:46 by tsekiguc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
-#define BUFFER_SIZE 32
-//#define DEBUG 1
-
-int		save_check(char **line, char **save)
+static int	save_check(char **line, char **save)
 {
 	char	*tmp;
-#ifdef DEBUG
-	printf("*****save_check part*****\n");
-#endif
+	char	*restart;
+
+	if (line == NULL || save == NULL)
+		return (ERROR);
 	*line = my_strdup(*save, '\n');
-	tmp = my_strdup(my_strchr(*save, '\n') + 1, '\0');
-	free(*save);
-	if (*line == NULL || tmp == NULL)
+	if (*line == NULL)
+		return (ERROR);
+	restart = my_strchr(*save, '\n') + 1;
+	tmp = my_strdup(restart, '\0');
+	if (tmp == NULL)
 	{
-#ifdef DEBUG
-		printf("save_check malloc failed. return -1\n");
-#endif
-		return (-1);
+		free(*line);
+		return (ERROR);
 	}
+	free(*save);
 	*save = tmp;
-#ifdef DEBUG
-	printf("*line is %s\n", *line);
-	printf("*save is %s\n", *save);
-	printf("*****save_check part*****\n");
-#endif
+	return (READ);
+}
+
+static int	save_init(char **save)
+{
+	if (*save != NULL)
+		return (1);
+	else
+	{
+		*save = (char *)malloc(sizeof(char));
+		if (*save == NULL)
+			return (0);
+		*save[0] = '\0';
+	}
 	return (1);
 }
 
-char	*empty_string(char *s)
+static int	my_free(char **line)
 {
-	char	*ret;
-
-	if (s != NULL)
-		return (s);
-	else
-	{
-		ret = (char *)malloc(sizeof(char));
-		if (ret == NULL)
-			return (NULL);
-		*ret = '\0';
-	}
-	return (ret);
+	free(*line);
+	return (ERROR);
 }
 
-int		my_buffering(int fd, char **line, char **save)
+static int	my_buffering(int fd, char **line, char **save, char *buf)
 {
-	char	*buf;
-	int		ret;
+	int		read_byte;
 
-#ifdef DEBUG
-	printf("*****my_buffering part*****\n");
-#endif
-	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (buf == NULL)
-		return (-1);
-	ret = read(fd, buf, BUFFER_SIZE);
-	while (ret > 0)
+	read_byte = read(fd, buf, BUFFER_SIZE);
+	while (read_byte > 0)
 	{
-		buf[ret] = '\0';
+		buf[read_byte] = '\0';
 		if (my_strchr(buf, '\n') == NULL)
+		{
 			*save = my_strjoin(*save, buf, '\0');
+			if (save == NULL)
+				return (ERROR);
+		}
 		else
 		{
 			*line = my_strjoin(*save, buf, '\n');
+			if (*line == NULL)
+				return (ERROR);
 			*save = my_strdup(my_strchr(buf, '\n') + 1, '\0');
+			if (*save == NULL)
+				return (my_free(line));
 			break ;
 		}
-		ret = read(fd, buf, BUFFER_SIZE);
+		read_byte = read(fd, buf, BUFFER_SIZE);
 	}
-	free(buf);
-#ifdef DEBUG
-	printf("ret   is %d\n", ret);
-	printf("*line is %s\n", *line);
-	printf("*save is %s\n", *save);
-	printf("*****my_buffering part*****\n");
-#endif
-	if (ret > 0 && (*line == NULL || *save == NULL))
-		ret = -1;
-	return (ret);
+	return (read_byte);
 }
 
-int		get_next_line(int fd, char **line)
+int	get_next_line(int fd, char **line)
 {
 	static char		*save;
+	char			*buf;
 	int				ret;
 
 	if (fd <= -1 || line == NULL || BUFFER_SIZE <= 0)
-		return (-1);
+		return (ERROR);
 	*line = NULL;
 	if (my_strchr(save, '\n') != NULL)
 		return (save_check(line, &save));
-	save = empty_string(save);
-	if (save == NULL)
-		return (-1);
-	ret = my_buffering(fd, line, &save);
+	if (!save_init(&save))
+		return (ERROR);
+	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (buf == NULL)
+		return (ERROR);
+	ret = my_buffering(fd, line, &save, buf);
+	free(buf);
 	if (ret > 0)
-		ret = 1;
+		ret = READ;
 	if (ret == 0)
 	{
 		*line = my_strdup(save, '\0');
-		free(save);
+		free (save);
 		save = NULL;
 	}
-#ifdef DEBUG
-	printf("*****gnl part*****\n");
-	printf("*line is %s\n", *line);
-	printf("save  is %s\n", save);
-	printf("*****gnl part*****\n");
-#endif
-	if (*line == NULL)
-		ret = -1;
 	return (ret);
 }

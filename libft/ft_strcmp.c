@@ -1,33 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strrchr.c                                       :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tsekiguc <tsekiguc@student.42tokyo.jp      +#+  +:+       +#+        */
+/*   By: tsekiguc <tsekiguc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/14 19:40:16 by tsekiguc          #+#    #+#             */
-/*   Updated: 2021/08/18 11:48:57 by tsekiguc         ###   ########.fr       */
+/*   Created: 2021/12/31 20:06:27 by tsekiguc          #+#    #+#             */
+/*   Updated: 2021/12/31 20:18:04 by tsekiguc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strrchr(const char *s, int c)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	char	*ret;
-	char	cc;
-	size_t	len;
-	size_t	i;
+	unsigned char	*ucs1;
+	unsigned char	*ucs2;
+	size_t			i;
 
-	ret = NULL;
-	cc = (char)c;
-	len = ft_strlen(s);
+	ucs1 = (unsigned char *)s1;
+	ucs2 = (unsigned char *)s2;
 	i = 0;
-	while (i <= len)
+	while (ucs1[i] == ucs2[i])
 	{
-		if (s[i] == cc)
-			ret = (char *)&s[i];
+		if (ucs1[i] == '\0')
+			return (0);
 		i++;
 	}
-	return (ret);
+	return (ucs1[i] - ucs2[i]);
 }
