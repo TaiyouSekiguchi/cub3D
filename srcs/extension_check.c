@@ -4,7 +4,6 @@ int		extension_check(char *file_path)
 {
 	size_t	len;
 
-	printf("file_path : %s\n", file_path);
 	len = ft_strlen(file_path);
 	if (len <= 4)
 		return (0);
