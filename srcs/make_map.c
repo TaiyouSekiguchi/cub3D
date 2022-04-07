@@ -51,8 +51,8 @@ static void	map_parse(t_game *game, t_list *list, char *news, int col)
 			if (c == 'N' || c == 'E' || c == 'W' || c == 'S')
 			{
 				*news = c;
-				game->player.pos_x = j;
-				game->player.pos_y = i;
+				game->player.pos_x = i;
+				game->player.pos_y = j;
 				game->world_map[i][j] = 0;
 			}
 			else if (c == ' ')

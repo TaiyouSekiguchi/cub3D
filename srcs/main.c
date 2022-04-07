@@ -28,9 +28,19 @@ void	map_put(t_game *game)
 	int	i;
 	int	j;
 
+	printf("   ");
+	i = 0;
+	while (i < game->col)
+	{
+		printf("%2d ", i);
+		i++;
+	}
+	printf("\n");
+
 	i = 0;
 	while (i < game->row)
 	{
+		printf("%2d ", i);
 		j = 0;
 		while (j < game->col)
 		{
@@ -44,6 +54,8 @@ void	map_put(t_game *game)
 
 void	file_read_result(t_game *game)
 {
+	printf("player pos_x  : %f\n", game->player.pos_x);
+	printf("player pos_y  : %f\n", game->player.pos_y);
 	printf("screen_width  : %d\n", game->screen_width);
 	printf("screen_height : %d\n", game->screen_height);
 	printf("floor         : %d\n", game->floor);
@@ -76,6 +88,9 @@ int		main(int argc, char *argv[])
 	mlx_hook(game.win, DESTROY_NOTIFY, 1L << 17, &my_close, &game);
 	mlx_hook(game.win, KEY_PRESS, 1L << 0, &deal_key, &game);
 	mlx_loop_hook(game.mlx, &main_loop, &game);
+
+	//mlx_put_image_to_window(game.mlx, game.win, game.img.img, 0, 0);
+
 	mlx_loop(game.mlx);
 	game_free(&game);
 	return (0);
