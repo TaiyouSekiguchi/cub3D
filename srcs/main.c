@@ -63,12 +63,84 @@ void	file_read_result(t_game *game)
 	map_put(game);
 }
 
+int		room(t_game *game, int **map, int x, int y)
+{
+	int	i;
+	int j;
+
+	printf("***********************************************\n");
+	i = 0;
+	while (i < game->row)
+	{
+		j = 0;
+		while (j < game->col)
+		{
+			printf(" %2d", map[i][j]);
+			j++;
+		}
+		printf("\n");
+		i++;
+	}
+	printf("***********************************************\n");
+
+	printf("row : %d\n", game->row);
+	printf("col : %d\n", game->col);
+	printf("x   : %d\n", x);
+	printf("y   : %d\n", y);
+
+	if ((x == 0 || x == game->row - 1) || (y == 0 || y == game->col - 1))
+	{
+		printf("check 0\n");
+		return (-1);
+	}
+	else
+	{
+		map[x][y] = -1;
+		if (map[x][y - 1] == 0)
+		{
+			printf("check 1\n");
+			if (room(game, map, x, y - 1) == -1)
+			{
+				return (-1);
+			}
+		}
+		if (map[x + 1][y] == 0)
+		{
+			printf("check 2\n");
+			if (room(game, map, x + 1, y) == -1)
+			{
+				return (-1);
+			}
+		}
+		if (map[x][y + 1] == 0)
+		{
+			printf("check 3\n");
+			if (room(game, map, x, y + 1) == -1)
+			{
+				return (-1);
+			}
+		}
+		if (map[x - 1][y] == 0)
+		{
+			printf("check 4\n");
+			if (room(game, map, x - 1, y) == -1)
+			{
+				return (-1);
+			}
+		}
+		return (1);
+	}
+}
+
 int		main(int argc, char *argv[])
 {
 	t_list	*list;
 	t_list	*map_list;
 	t_game	game;
 	char	news;
+	int		**map;
+	int		i;
+	int		j;
 
 	if (argc != 2)
 		error_exit(NULL, "Usage: ./cub3D file_name.cub");
@@ -83,6 +155,42 @@ int		main(int argc, char *argv[])
 	ft_lstclear(&list, free);
 
 	//file_read_result(&game);
+
+	map = (int **)malloc(sizeof(int *) * game.row);
+	i = 0;
+	while (i < game.row)
+	{
+		map[i] = (int *)malloc(sizeof(int) * game.col);
+		i++;
+	}
+
+	i = 0;
+	while (i < game.row)
+	{
+		j = 0;
+		while (j < game.col)
+		{
+			map[i][j] = game.world_map[i][j];
+			j++;
+		}
+		i++;
+	}
+
+	i = 0;
+	while (i < game.row)
+	{
+		j = 0;
+		while (j < game.col)
+		{
+			printf(" %d ", map[i][j]);
+			j++;
+		}
+		printf("\n");
+		i++;
+	}
+
+	if (room(&game, map, game.player.pos_x, game.player.pos_y) == -1)
+		error_exit(NULL, "map is not closed.");
 
 	decide_direction(&game, news);
 	mlx_hook(game.win, DESTROY_NOTIFY, 1L << 17, &my_close, &game);
