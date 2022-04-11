@@ -26,8 +26,10 @@ RM				=	rm -f
 
 .PHONY			:	all clean fclean re
 
-vpath %.c srcs
-vpath %.h include
+VPATH		=	srcs:srcs/game:srcs/init:srcs/map:srcs/utils
+
+#vpath %.c srcs
+#vpath %.h include
 
 all				:	$(NAME)
 
