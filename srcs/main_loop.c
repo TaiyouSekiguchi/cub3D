@@ -31,7 +31,6 @@ int		main_loop(t_game *game)
 
 	ZBuffer = (double *)malloc(sizeof(double) * game->screen_width);
 
-
 	unsigned int texture[4][texWidth * texHeight];
 	for (x = 0; x < 4; x++)
 	{
@@ -44,6 +43,8 @@ int		main_loop(t_game *game)
 	w = 640;
 	h = 480;
 
+
+	//floor and ceil
 	for (y = game->screen_height / 2 + 1; y < game->screen_height; ++y)
 	{
 		float rayDirX0 = game->player.dir_x - game->player.plane_x;
@@ -101,6 +102,8 @@ int		main_loop(t_game *game)
 		}
 	}
 
+
+	//wall
 	for (x = 0; x < w; x++)
 	{
 		cameraX = 2 * x / (double)w - 1;
@@ -211,6 +214,9 @@ int		main_loop(t_game *game)
 		ZBuffer[x] = perpWallDist;
 	}
 
+
+
+
 	/*
 	for (int i = 0; i < game->map_cnt.sprite_cnt; i++)
 	{
@@ -274,6 +280,9 @@ int		main_loop(t_game *game)
 		}
 	}
 	*/
+
+
+
 	mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
 	//free(spriteOrder);
 	//free(spriteDistance);

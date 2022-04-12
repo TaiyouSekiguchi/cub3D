@@ -23,34 +23,6 @@ void	decide_direction(t_game *game, char news)
 	}
 }
 
-void	map_put(t_game *game)
-{
-	int	i;
-	int	j;
-
-	printf("   ");
-	i = 0;
-	while (i < game->col)
-	{
-		printf("%2d ", i);
-		i++;
-	}
-	printf("\n");
-
-	i = 0;
-	while (i < game->row)
-	{
-		printf("%2d ", i);
-		j = 0;
-		while (j < game->col)
-		{
-			printf("%2d ", game->world_map[i][j]);
-			j++;
-		}
-		printf("\n");
-		i++;
-	}
-}
 
 void	file_read_result(t_game *game)
 {
@@ -60,8 +32,9 @@ void	file_read_result(t_game *game)
 	printf("screen_height : %d\n", game->screen_height);
 	printf("floor         : %d\n", game->floor);
 	printf("ceil          : %d\n", game->ceil);
-	map_put(game);
+	//map_put(game);
 }
+
 
 int		main(int argc, char *argv[])
 {
@@ -69,28 +42,22 @@ int		main(int argc, char *argv[])
 	t_list	*map_list;
 	t_game	game;
 	char	news;
+	int		**map;
 
 	if (argc != 2)
 		error_exit(NULL, "Usage: ./cub3D file_name.cub");
-
 	if (!extension_check(argv[1]))
 		error_exit(NULL, "File extension is not (******.cub).");
 
 	read_file(argv[1], &list);
 	game_init(&game);
-	map_list = texture_and_color_parse(&game, list);
-	make_map(&game, map_list, &news);
+	file_info_parse(&game, list, &news);
 	ft_lstclear(&list, free);
-
-	file_read_result(&game);
-
+	map_check(&game);
 	decide_direction(&game, news);
 	mlx_hook(game.win, DESTROY_NOTIFY, 1L << 17, &my_close, &game);
 	mlx_hook(game.win, KEY_PRESS, 1L << 0, &deal_key, &game);
 	mlx_loop_hook(game.mlx, &main_loop, &game);
-
-	//mlx_put_image_to_window(game.mlx, game.win, game.img.img, 0, 0);
-
 	mlx_loop(game.mlx);
 	game_free(&game);
 	return (0);
