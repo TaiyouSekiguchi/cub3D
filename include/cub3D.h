@@ -30,8 +30,8 @@
 #define KEY_S 0x73
 #define KEY_A 0x61
 #define KEY_D 0x64
-#define KEY_LEFT 123
-#define KEY_RIGHT 124
+#define KEY_LEFT 0xff51
+#define KEY_RIGHT 0xff53
 
 #define KEY_PRESS 2
 #define DESTROY_NOTIFY 17
