@@ -90,6 +90,11 @@ typedef struct	s_game
 }				t_game;
 
 //prototype declare (filename alphabet order)
+
+//close_check.c
+int		close_check(t_game *game, int **map, int x, int y);
+
+
 //color.c
 unsigned int	create_trgb(int t, int r, int g, int b);
 u_int8_t		get_t(unsigned int trgb);
@@ -109,6 +114,9 @@ void			game_init(t_game *game);
 //extension_check.c
 int				extension_check(char *file_path);
 
+//file_info_parse.c
+void			file_info_parse(t_game *game, t_list *list, char *news);
+
 //game_free.c
 void			game_free(t_game *game);
 
@@ -118,11 +126,11 @@ int				main_loop(t_game *game);
 //make_map.c
 void			make_map(t_game *game, t_list *list, char *news);
 
+//map_check.c
+int				map_check(t_game *game);
+
 //read_file.c
 void			read_file(char *file_name, t_list **list);
-
-//texture_and_color_parse.c
-t_list			*texture_and_color_parse(t_game *game, t_list *list);
 
 //utils.c
 int				my_mlx_pixel_put(t_img *img, int x, int y, int color);

@@ -97,7 +97,7 @@ void	split_free(char **split)
 	split = NULL;
 }
 
-t_list	*texture_and_color_parse(t_game *game, t_list *list)
+void	file_info_parse(t_game *game, t_list *list, char *news)
 {
 	t_list	*current;
 	char	**split;
@@ -131,5 +131,6 @@ t_list	*texture_and_color_parse(t_game *game, t_list *list)
 	}
 	if (parse_check(game))
 		error_exit(NULL, "File information is not enough.");
-	return (current);
+	make_map(game, current, news);
+	//return (current);
 }

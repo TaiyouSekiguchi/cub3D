@@ -23,34 +23,6 @@ void	decide_direction(t_game *game, char news)
 	}
 }
 
-void	map_put(t_game *game)
-{
-	int	i;
-	int	j;
-
-	printf("   ");
-	i = 0;
-	while (i < game->col)
-	{
-		printf("%2d ", i);
-		i++;
-	}
-	printf("\n");
-
-	i = 0;
-	while (i < game->row)
-	{
-		printf("%2d ", i);
-		j = 0;
-		while (j < game->col)
-		{
-			printf("%2d ", game->world_map[i][j]);
-			j++;
-		}
-		printf("\n");
-		i++;
-	}
-}
 
 void	file_read_result(t_game *game)
 {
@@ -60,77 +32,9 @@ void	file_read_result(t_game *game)
 	printf("screen_height : %d\n", game->screen_height);
 	printf("floor         : %d\n", game->floor);
 	printf("ceil          : %d\n", game->ceil);
-	map_put(game);
+	//map_put(game);
 }
 
-int		room(t_game *game, int **map, int x, int y)
-{
-	int	i;
-	int j;
-
-	printf("***********************************************\n");
-	i = 0;
-	while (i < game->row)
-	{
-		j = 0;
-		while (j < game->col)
-		{
-			printf(" %2d", map[i][j]);
-			j++;
-		}
-		printf("\n");
-		i++;
-	}
-	printf("***********************************************\n");
-
-	printf("row : %d\n", game->row);
-	printf("col : %d\n", game->col);
-	printf("x   : %d\n", x);
-	printf("y   : %d\n", y);
-
-	if ((x == 0 || x == game->row - 1) || (y == 0 || y == game->col - 1))
-	{
-		printf("check 0\n");
-		return (-1);
-	}
-	else
-	{
-		map[x][y] = -1;
-		if (map[x][y - 1] == 0)
-		{
-			printf("check 1\n");
-			if (room(game, map, x, y - 1) == -1)
-			{
-				return (-1);
-			}
-		}
-		if (map[x + 1][y] == 0)
-		{
-			printf("check 2\n");
-			if (room(game, map, x + 1, y) == -1)
-			{
-				return (-1);
-			}
-		}
-		if (map[x][y + 1] == 0)
-		{
-			printf("check 3\n");
-			if (room(game, map, x, y + 1) == -1)
-			{
-				return (-1);
-			}
-		}
-		if (map[x - 1][y] == 0)
-		{
-			printf("check 4\n");
-			if (room(game, map, x - 1, y) == -1)
-			{
-				return (-1);
-			}
-		}
-		return (1);
-	}
-}
 
 int		main(int argc, char *argv[])
 {
@@ -139,66 +43,21 @@ int		main(int argc, char *argv[])
 	t_game	game;
 	char	news;
 	int		**map;
-	int		i;
-	int		j;
 
 	if (argc != 2)
 		error_exit(NULL, "Usage: ./cub3D file_name.cub");
-
 	if (!extension_check(argv[1]))
 		error_exit(NULL, "File extension is not (******.cub).");
 
 	read_file(argv[1], &list);
 	game_init(&game);
-	map_list = texture_and_color_parse(&game, list);
-	make_map(&game, map_list, &news);
+	file_info_parse(&game, list, &news);
 	ft_lstclear(&list, free);
-
-	//file_read_result(&game);
-
-	map = (int **)malloc(sizeof(int *) * game.row);
-	i = 0;
-	while (i < game.row)
-	{
-		map[i] = (int *)malloc(sizeof(int) * game.col);
-		i++;
-	}
-
-	i = 0;
-	while (i < game.row)
-	{
-		j = 0;
-		while (j < game.col)
-		{
-			map[i][j] = game.world_map[i][j];
-			j++;
-		}
-		i++;
-	}
-
-	i = 0;
-	while (i < game.row)
-	{
-		j = 0;
-		while (j < game.col)
-		{
-			printf(" %d ", map[i][j]);
-			j++;
-		}
-		printf("\n");
-		i++;
-	}
-
-	if (room(&game, map, game.player.pos_x, game.player.pos_y) == -1)
-		error_exit(NULL, "map is not closed.");
-
+	map_check(&game);
 	decide_direction(&game, news);
 	mlx_hook(game.win, DESTROY_NOTIFY, 1L << 17, &my_close, &game);
 	mlx_hook(game.win, KEY_PRESS, 1L << 0, &deal_key, &game);
 	mlx_loop_hook(game.mlx, &main_loop, &game);
-
-	//mlx_put_image_to_window(game.mlx, game.win, game.img.img, 0, 0);
-
 	mlx_loop(game.mlx);
 	game_free(&game);
 	return (0);
