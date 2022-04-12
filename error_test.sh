@@ -20,7 +20,22 @@ error_file=(
 	'texture_bad_path.cub'
 	'texture_no_north.cub'
 	'color_bad_num.cub'
+	'color_big_num.cub'
+	'color_negative_num.cub'
 	'color_no_floor.cub'
+	'color_num_and_char.cub'
+	'color_space_align.cub'
+	'color_too_few_num.cub'
+	'color_too_many_num.cub'
+	'color_too_small_num.cub'
+	'map_empty_line.cub'
+	'map_no_spawn.cub'
+	'map_not_closed.cub'
+	'map_not_last.cub'
+	'map_space_line.cub'
+	'tab_delimiter.cub'
+	'bad_extension.cud'
+	'directory.cub'
 )
 
 make
