@@ -1,5 +1,29 @@
 #include "cub3D.h"
 
+static void	draw_floor_and_ceil(t_game *game)
+{
+	unsigned int	color;
+	int				horizon;
+	int				x;
+	int				y;
+
+	horizon = game->screen_height / 2;
+	y = 0;
+	while (y < horizon)
+	{
+		x = 0;
+		while (x < game->screen_width)
+		{
+			color = game->floor;
+			my_mlx_pixel_put(&game->img, x, y + horizon, color);
+			color = game->ceil;
+			my_mlx_pixel_put(&game->img, x, y, color);
+			x++;
+		}
+		y++;
+	}
+}
+
 int		main_loop(t_game *game)
 {
 	double		cameraX;
@@ -31,7 +55,6 @@ int		main_loop(t_game *game)
 
 	ZBuffer = (double *)malloc(sizeof(double) * game->screen_width);
 
-
 	unsigned int texture[4][texWidth * texHeight];
 	for (x = 0; x < 4; x++)
 	{
@@ -44,63 +67,10 @@ int		main_loop(t_game *game)
 	w = 640;
 	h = 480;
 
-	for (y = game->screen_height / 2 + 1; y < game->screen_height; ++y)
-	{
-		float rayDirX0 = game->player.dir_x - game->player.plane_x;
-		float rayDirY0 = game->player.dir_y - game->player.plane_y;
-		float rayDirX1 = game->player.dir_x + game->player.plane_x;
-		float rayDirY1 = game->player.dir_y + game->player.plane_y;
+	//floor and ceil
+	draw_floor_and_ceil(game);
 
-		int p = y - game->screen_height /2;
-
-		float posZ = 0.5 * game->screen_height;
-
-		float rowDistance = posZ / p;
-
-		float floorStepX = rowDistance * (rayDirX1 - rayDirX0) / game->screen_width;
-		float floorStepY = rowDistance * (rayDirY1 - rayDirY0) / game->screen_width;
-
-		float floorX = game->player.pos_x + rowDistance * rayDirX0;
-		float floorY = game->player.pos_y + rowDistance * rayDirY0;
-      
-		for(x = 0; x < game->screen_width; ++x)
-		{
-			// the cell coord is simply got from the integer parts of floorX and floorY
-			int cellX = (int)(floorX);
-			int cellY = (int)(floorY);
-			// get the texture coordinate from the fractional part
-			int tx = (int)(texWidth * (floorX - cellX)) & (texWidth - 1);
-			int ty = (int)(texHeight * (floorY - cellY)) & (texHeight - 1);
-			
-			floorX += floorStepX;
-			floorY += floorStepY;
-			
-			// choose texture and draw the pixel
-			//int checkerBoardPattern = (int)(cellX + cellY) & 1;
-			//int floorTexture;
-			//if(checkerBoardPattern == 0) floorTexture = 3;
-			//else floorTexture = 4;
-			int floorTexture = 3;
-			int ceilingTexture = 6;
-			
-			// floor
-			//color = texture[floorTexture][texWidth * ty + tx];
-			//color = 0x00FF0000;
-			color = game->floor;
-			//color = (color >> 1) & 8355711; // make a bit darker
-			my_mlx_pixel_put(&game->img, x, y, color);
-			//buffer[y][x] = color;
-			
-			//ceiling (symmetrical, at screen_height - y - 1 instead of y)
-			//color = texture[ceilingTexture][texWidth * ty + tx];
-			//color = 0x00FF0000;
-			color = game->ceil;
-			//color = (color >> 1) & 8355711; // make a bit darker
-			my_mlx_pixel_put(&game->img, x, game->screen_height - y - 1, color);
-			//buffer[screen_height - y - 1][x] = color;
-		}
-	}
-
+	//wall
 	for (x = 0; x < w; x++)
 	{
 		cameraX = 2 * x / (double)w - 1;
@@ -211,6 +181,9 @@ int		main_loop(t_game *game)
 		ZBuffer[x] = perpWallDist;
 	}
 
+
+
+
 	/*
 	for (int i = 0; i < game->map_cnt.sprite_cnt; i++)
 	{
@@ -274,6 +247,9 @@ int		main_loop(t_game *game)
 		}
 	}
 	*/
+
+
+
 	mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
 	//free(spriteOrder);
 	//free(spriteDistance);

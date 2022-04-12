@@ -49,7 +49,11 @@ static void	do_color(int *color, const char *line)
 static int		set_texture(t_game *game, char *path, int num)
 {
 	game->imgs[num].img = mlx_xpm_file_to_image(game->mlx, path, &game->imgs[num].width, &game->imgs[num].height);
+	if (game->imgs[num].img == NULL)
+		error_exit("mlx", NULL);
 	game->imgs[num].data = (int *)mlx_get_data_addr(game->imgs[num].img, &game->imgs[num].bpp, &game->imgs[num].line_len, &game->imgs[num].endian);
+	if (game->imgs[num].data == NULL)
+		error_exit("mlx", NULL);
 }
 
 static int		is_empty_line(char *line)
@@ -93,7 +97,7 @@ void	split_free(char **split)
 	split = NULL;
 }
 
-t_list	*texture_and_color_parse(t_game *game, t_list *list)
+void	file_info_parse(t_game *game, t_list *list, char *news)
 {
 	t_list	*current;
 	char	**split;
@@ -127,5 +131,6 @@ t_list	*texture_and_color_parse(t_game *game, t_list *list)
 	}
 	if (parse_check(game))
 		error_exit(NULL, "File information is not enough.");
-	return (current);
+	make_map(game, current, news);
+	//return (current);
 }

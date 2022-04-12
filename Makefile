@@ -1,17 +1,19 @@
 NAME			=	cub3D
 SRCS			=	main.c\
+					close_check.c\
 					color.c\
 					deal_key.c\
 					error_exit.c\
 					extension_check.c\
+					file_info_parse.c\
 					game_free.c\
 					get_next_line.c\
 					get_next_line_utils.c\
 					init.c\
 					main_loop.c\
 					make_map.c\
+					map_check.c\
 					read_file.c\
-					texture_and_color_parse.c\
 					utils.c
 
 OBJS_DIR		=	./objs
