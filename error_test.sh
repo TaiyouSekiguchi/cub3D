@@ -1,20 +1,33 @@
 #!/bin/bash
 
-texture_path_error_file=(
-	'texture_path_error.cub'
+function test () {
+	RESULT=`./cub3D error_map/"${error_file[$i]}" 2>&1`
+	STATUS=`echo $?`
+	echo "================================================="
+	echo "Test file :" "${error_file[$i]}"
+	echo ""
+	echo "$RESULT"
+	if [ "$STATUS" != "1" ]; then
+		echo "STATUS is DIFFERENT."
+		echo "STATUS : $STATUS"
+	fi
+	echo "================================================="
+	echo ""
+	echo ""
+}
+
+error_file=(
+	'texture_bad_path.cub'
+	'texture_no_north.cub'
+	'color_bad_num.cub'
+	'color_no_floor.cub'
 )
 
 make
-for (( i = 0; i < ${#texture_path_error_file[@]}; ++i))
+cp /dev/null log/error_test_result.log
+for (( i = 0; i < ${#error_file[@]}; ++i))
 do
-	RESULT=`./cub3D error_map/"${texture_path_error_file[$i]}" 2>&1`
-	#RESULT=`valgrind --leak-check=full ./cub3D error_map/"${texture_path_error_file[$i]}" 2>&1`
-	if [ "$RESULT" == "Error\nmlx: No such file or directory\n" ]; then
-		echo "OK"
-	else
-		echo "NG"
-		echo "$RESULT"
-	fi
+	test "${error_file[$i]}" >> log/error_test_result.log
 done
 
 echo 'test finished'
