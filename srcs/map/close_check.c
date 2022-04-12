@@ -25,7 +25,7 @@ static void	map_put(t_game *game, int **map, int x, int y)
 
 int		close_check(t_game *game, int **map, int x, int y)
 {
-	map_put(game, map, x, y);
+	//map_put(game, map, x, y);
 	if ((x == 0 || x == game->row - 1) || (y == 0 || y == game->col - 1))
 		return (0);
 	else
