@@ -41,7 +41,21 @@ static void	gnl_loop(int fd, t_list **list)
 		if (ret == ERROR)
 			read_file_exit(fd, "get_next_line : failed");
 	}
-	free(line);
+	if (line[0] == '\0')
+	{
+		free(line);
+		line = NULL;
+	}
+	else
+	{
+		new = ft_lstnew(line);
+		if (new == NULL)
+		{
+			close(fd);
+			error_exit("malloc", NULL);
+		}
+		ft_lstadd_back(list, new);
+	}
 }
 
 void	read_file(char *file_name, t_list **list)
