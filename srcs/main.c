@@ -50,7 +50,7 @@ int		main(int argc, char *argv[])
 		error_exit(NULL, "File extension is not (******.cub).");
 
 	read_file(argv[1], &list);
-	game_init(&game);
+	game_init(&game, &news);
 	file_info_parse(&game, list, &news);
 	ft_lstclear(&list, free);
 	map_check(&game);

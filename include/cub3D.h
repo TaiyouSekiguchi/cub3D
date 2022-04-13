@@ -109,7 +109,10 @@ int				deal_key(int key_code, t_game *game);
 void			error_exit(char *cmd, char *msg);
 
 //init.c
-void			game_init(t_game *game);
+void			game_init(t_game *game, char *news);
+
+//is_empty_line.c
+int				is_empty_line(char *line);
 
 //extension_check.c
 int				extension_check(char *file_path);

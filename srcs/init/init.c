@@ -22,7 +22,7 @@ static void	img_init(t_game *game)
 	game->img.addr = mlx_get_data_addr(game->img.img, &game->img.bpp, &game->img.line_len, &game->img.endian);
 }
 
-void	game_init(t_game *game)
+void	game_init(t_game *game, char *news)
 {
 	game->screen_width = 640;
 	game->screen_height = 480;
@@ -38,4 +38,5 @@ void	game_init(t_game *game)
 
 	game->floor = -1;
 	game->ceil = -1;
+	*news = '\0';
 }
