@@ -9,11 +9,14 @@ function test () {
 	cat error_map/"${1}" 2>&1
 	echo ""
 	echo "<<<< RESURT >>>>"
-	echo "$RESULT"
-	if [ "$STATUS" != "1" ]; then
-		echo "STATUS is DIFFERENT."
-		echo "STATUS : $STATUS"
+	echo ""
+	if [ "$STATUS" == "1" ]; then
+		echo "STATUS is GOOD!! ;)"
+		echo ""
+	else
+		echo "STATUS is BAAD!! :("
 	fi
+	echo "$RESULT"
 	echo ""
 	echo "================================================="
 	echo ""
@@ -48,5 +51,5 @@ for (( i = 0; i < ${#error_file[@]}; ++i))
 do
 	test "${error_file[$i]}" >> log/error_test_result.log
 done
-
-echo 'test finished'
+echo ""
+echo '[ TEST FINISHED!! ]'
