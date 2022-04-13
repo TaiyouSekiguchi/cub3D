@@ -6,7 +6,7 @@
 #    By: tsekiguc <tsekiguc@student.42tokyo.jp      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/07/20 09:45:12 by tsekiguc          #+#    #+#              #
-#    Updated: 2022/04/07 17:57:14 by user42           ###   ########.fr        #
+#    Updated: 2022/04/13 17:41:03 by user42           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,7 +61,9 @@ SRCS	=	ft_atoi.c\
 			ft_strtrim.c\
 			ft_substr.c\
 			ft_tolower.c\
-			ft_toupper.c
+			ft_toupper.c\
+			ft_split_free.c\
+			ft_split_size.c
 
 OBJS	=	$(SRCS:.c=.o)
 

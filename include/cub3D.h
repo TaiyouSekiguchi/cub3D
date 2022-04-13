@@ -19,6 +19,7 @@
 #define texWidth 64
 #define texHeight 64
 
+#define COLOR_MAX 255
 #define RGB_Red 0x00FF0000
 #define RGB_Green 0x0000FF00
 #define RGB_Blue 0x000000FF
@@ -101,6 +102,9 @@ u_int8_t		get_t(unsigned int trgb);
 u_int8_t		get_r(unsigned int trgb);
 u_int8_t		get_g(unsigned int trgb);
 u_int8_t		get_b(unsigned int trgb);
+
+//color_atoi.c
+int				color_atoi(char *str);
 
 //deal_key.c
 int				deal_key(int key_code, t_game *game);

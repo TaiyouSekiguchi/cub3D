@@ -23,7 +23,6 @@ void	decide_direction(t_game *game, char news)
 	}
 }
 
-
 void	file_read_result(t_game *game)
 {
 	printf("player pos_x  : %f\n", game->player.pos_x);
@@ -35,20 +34,16 @@ void	file_read_result(t_game *game)
 	//map_put(game);
 }
 
-
 int		main(int argc, char *argv[])
 {
-	t_list	*list;
-	t_list	*map_list;
 	t_game	game;
+	t_list	*list;
 	char	news;
-	int		**map;
 
 	if (argc != 2)
-		error_exit(NULL, "Usage: ./cub3D file_name.cub");
+		error_exit(NULL, "cub3d : ./cub3D file_name.cub");
 	if (!extension_check(argv[1]))
-		error_exit(NULL, "File extension is not (******.cub).");
-
+		error_exit(NULL, "cub3d : File extension [.cub]");
 	read_file(argv[1], &list);
 	game_init(&game, &news);
 	file_info_parse(&game, list, &news);
