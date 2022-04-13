@@ -2,6 +2,7 @@
 
 function test () {
 	RESULT=`./cub3D map/"${1}" 2>&1`
+	#RESULT=`valgrind --leak-check=full ./cub3D map/"${1}" 2>&1`
 	STATUS=`echo $?`
 	echo "================================================="
 	echo "Test file :" "${1}"
