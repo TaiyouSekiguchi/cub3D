@@ -16,6 +16,20 @@ static int file_open(char *file_name)
 	return (fd);
 }
 
+static void	my_lstadd(int fd, t_list **list, char *line)
+{
+	t_list	*new;
+
+	new = ft_lstnew(line);
+	if (new == NULL)
+	{
+		close(fd);
+		error_exit("malloc", NULL);
+	}
+	ft_lstadd_back(list, new);
+}
+
+
 static void	gnl_loop(int fd, t_list **list)
 {
 	char	*line;
@@ -30,13 +44,7 @@ static void	gnl_loop(int fd, t_list **list)
 		read_file_exit(fd, "get_next_line : failed");
 	while (ret > 0)
 	{
-		new = ft_lstnew(line);
-		if (new == NULL)
-		{
-			close(fd);
-			error_exit("malloc", NULL);
-		}
-		ft_lstadd_back(list, new);
+		my_lstadd(fd, list, line);
 		ret = get_next_line(fd, &line);
 		if (ret == ERROR)
 			read_file_exit(fd, "get_next_line : failed");
@@ -47,15 +55,7 @@ static void	gnl_loop(int fd, t_list **list)
 		line = NULL;
 	}
 	else
-	{
-		new = ft_lstnew(line);
-		if (new == NULL)
-		{
-			close(fd);
-			error_exit("malloc", NULL);
-		}
-		ft_lstadd_back(list, new);
-	}
+		my_lstadd(fd, list, line);
 }
 
 void	read_file(char *file_name, t_list **list)
