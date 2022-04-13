@@ -1,16 +1,20 @@
 #!/bin/bash
 
 function test () {
-	RESULT=`./cub3D error_map/"${error_file[$i]}" 2>&1`
+	RESULT=`./cub3D error_map/"${1}" 2>&1`
 	STATUS=`echo $?`
 	echo "================================================="
-	echo "Test file :" "${error_file[$i]}"
+	echo "Test file :" "${1}"
 	echo ""
+	cat error_map/"${1}" 2>&1
+	echo ""
+	echo "<<<< RESURT >>>>"
 	echo "$RESULT"
 	if [ "$STATUS" != "1" ]; then
 		echo "STATUS is DIFFERENT."
 		echo "STATUS : $STATUS"
 	fi
+	echo ""
 	echo "================================================="
 	echo ""
 	echo ""
