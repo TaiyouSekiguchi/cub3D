@@ -14,6 +14,7 @@ SRCS			=	main.c\
 					make_map.c\
 					map_check.c\
 					read_file.c\
+					is_empty_line.c\
 					utils.c
 
 OBJS_DIR		=	./objs
