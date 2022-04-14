@@ -4,6 +4,8 @@ static int	set_texture(t_game *game, char *path, int num)
 {
 	if (path == NULL)
 		error_exit(NULL, "cub3D : Texture format \"NO(SO, WE, EA) file_path\"");
+	if (game->imgs[num].img != NULL)
+		error_exit(NULL, "cub3D : Texture path is already set");
 	game->imgs[num].img = mlx_xpm_file_to_image(game->mlx, path,\
 		&game->imgs[num].width, &game->imgs[num].height);
 	if (game->imgs[num].img == NULL)
@@ -39,6 +41,8 @@ static void	set_color(int *color, const char *rgb)
 
 	if (rgb == NULL || comma_count(rgb) != 2)
 		error_exit(NULL, "cub3D : Color format \"F(C) R,G,B\"");
+	if (*color != -1)
+		error_exit(NULL, "cub3D : Color is already set");
 	split_rgb = ft_split(rgb, ',');
 	if (split_rgb == NULL)
 		error_exit("malloc", NULL);

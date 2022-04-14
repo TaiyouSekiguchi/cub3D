@@ -77,12 +77,16 @@ file=(
 
 error_file=(
 	'texture_bad_path.cub'
+	'texture_multiple_line.cub'
+	'texture_multiple_path.cub'
 	'texture_no_north.cub'
 	'texture_no_path.cub'
 	'color_bad_num.cub'
 	'color_blue_empty.cub'
 	'color_forbidden_char_1.cub'
 	'color_forbidden_char_2.cub'
+	'color_multiple_line.cub'
+	'color_multiple_rgb.cub'
 	'color_negative_num.cub'
 	'color_no_blue.cub'
 	'color_no_ceil.cub'
