@@ -32,7 +32,7 @@ static int	comma_count(char *rgb)
 	return (count);
 }
 
-static void	set_color(int *color, const char *rgb)
+static void	set_color(int *color, char *rgb)
 {
 	char	**split_rgb;
 	int		red;
@@ -68,7 +68,62 @@ static void	parse_check(t_game *game)
 		error_exit(NULL, "cub3D : Lack of file information");
 }
 
+static int	is_info(char *identifier)
+{
+	if (ft_strcmp(identifier, "NO") == 0
+		|| ft_strcmp(identifier, "SO") == 0
+		|| ft_strcmp(identifier, "WE") == 0
+		|| ft_strcmp(identifier, "EA") == 0
+		|| ft_strcmp(identifier, "F") == 0
+		|| ft_strcmp(identifier, "C") == 0)
+		return (1);
+	return (0);
+}
+
 void	file_info_parse(t_game *game, t_list *list, char *news)
+{
+	t_list	*current;
+	char	**split;
+
+	current = list;
+	while (current != NULL)
+	{
+		if (!is_empty_line(current->content))
+		{
+			split = ft_split(current->content, ' ');
+			if (split == NULL)
+				error_exit("malloc", NULL);
+			if (is_info(split[0]))
+			{
+				if (ft_split_size(split) != 2)
+					error_exit(NULL, "cub3D : Wrong format \"[identifier] [information]\"");
+				if (ft_strcmp(split[0], "NO") == 0)
+					set_texture(game, split[1], 0);
+				else if (ft_strcmp(split[0], "SO") == 0)
+					set_texture(game, split[1], 1);
+				else if (ft_strcmp(split[0], "WE") == 0)
+					set_texture(game, split[1], 2);
+				else if (ft_strcmp(split[0], "EA") == 0)
+					set_texture(game, split[1], 3);
+				else if (ft_strcmp(split[0], "F") == 0)
+					set_color(&game->floor, split[1]);
+				else if (ft_strcmp(split[0], "C") == 0)
+					set_color(&game->ceil, split[1]);
+			}
+			else
+			{
+				ft_split_free(split);
+				break ;
+			}
+			ft_split_free(split);
+		}
+		current = current->next;
+	}
+	parse_check(game);
+	make_map(game, current, news);
+}
+
+/*void	file_info_parse(t_game *game, t_list *list, char *news)
 {
 	t_list	*current;
 	char	**split;
@@ -104,4 +159,4 @@ void	file_info_parse(t_game *game, t_list *list, char *news)
 	}
 	parse_check(game);
 	make_map(game, current, news);
-}
+}*/

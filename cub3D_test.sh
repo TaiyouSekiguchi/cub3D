@@ -10,7 +10,7 @@ function exec_test () {
 	cat map/"${1}" 2>&1
 	echo ""
 	echo ""
-	echo "<<<< RESURT >>>>"
+	echo "<<<< RESULT >>>>"
 	echo ""
 	if [ "$STATUS" == "0" ]; then
 		echo "STATUS is GOOD!! ;)"
@@ -34,7 +34,7 @@ function error_test () {
 	echo ""
 	cat error_map/"${1}" 2>&1
 	echo ""
-	echo "<<<< RESURT >>>>"
+	echo "<<<< RESULT >>>>"
 	echo ""
 	if [ "$STATUS" == "1" ]; then
 		echo "STATUS is GOOD!! ;)"
@@ -72,6 +72,9 @@ function error_loop () {
 file=(
 	'simple.cub'
 	'subject.cub'
+	'minimum_1.cub'
+	'minimum_2.cub'
+	'small.cub'
 	'map_no_newline.cub'
 )
 
@@ -117,4 +120,5 @@ make
 cp /dev/null log/cub3D_test.log
 exec_loop >> log/cub3D_test.log
 error_loop >> log/cub3D_test.log
+echo ""
 echo '[ TEST FINISHED!! ]'
