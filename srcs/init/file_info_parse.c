@@ -1,7 +1,9 @@
 #include "cub3D.h"
 
-static int		set_texture(t_game *game, char *path, int num)
+static int	set_texture(t_game *game, char *path, int num)
 {
+	if (path == NULL)
+		error_exit(NULL, "cub3D : Texture format \"NO(SO, WE, EA) file_path\"");
 	game->imgs[num].img = mlx_xpm_file_to_image(game->mlx, path,\
 		&game->imgs[num].width, &game->imgs[num].height);
 	if (game->imgs[num].img == NULL)
@@ -12,6 +14,22 @@ static int		set_texture(t_game *game, char *path, int num)
 		error_exit("mlx", NULL);
 }
 
+static int	comma_count(char *rgb)
+{
+	int	count;
+	int	i;
+
+	count = 0;
+	i = 0;
+	while (rgb[i] != '\0')
+	{
+		if (rgb[i] == ',')
+			count++;
+		i++;
+	}
+	return (count);
+}
+
 static void	set_color(int *color, const char *rgb)
 {
 	char	**split_rgb;
@@ -19,6 +37,8 @@ static void	set_color(int *color, const char *rgb)
 	int		green;
 	int		blue;
 
+	if (rgb == NULL || comma_count(rgb) != 2)
+		error_exit(NULL, "cub3D : Color format \"F(C) R,G,B\"");
 	split_rgb = ft_split(rgb, ',');
 	if (split_rgb == NULL)
 		error_exit("malloc", NULL);
