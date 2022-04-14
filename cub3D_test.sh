@@ -1,15 +1,20 @@
 #!/bin/bash
 
 function exec_test () {
-	RESULT=`./cub3D map/"${1}" 2>&1`
+	#RESULT=`./cub3D map/"${1}" 2>&1`
 	#RESULT=`valgrind --leak-check=full ./cub3D map/"${1}" 2>&1`
-	STATUS=`echo $?`
+	#STATUS=`echo $?`
 	echo "================================================="
 	echo "Test file :" "${1}"
 	echo ""
 	cat map/"${1}" 2>&1
 	echo ""
 	echo ""
+
+	RESULT=`./cub3D map/"${1}" 2>&1`
+	#RESULT=`valgrind --leak-check=full ./cub3D map/"${1}" 2>&1`
+	STATUS=`echo $?`
+
 	echo "<<<< RESULT >>>>"
 	echo ""
 	if [ "$STATUS" == "0" ]; then
@@ -118,7 +123,8 @@ error_file=(
 
 make
 cp /dev/null log/cub3D_test.log
-exec_loop >> log/cub3D_test.log
+exec_loop
+#exec_loop >> log/cub3D_test.log
 error_loop >> log/cub3D_test.log
 echo ""
 echo '[ TEST FINISHED!! ]'
