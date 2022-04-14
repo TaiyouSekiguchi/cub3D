@@ -113,6 +113,7 @@ error_file=(
 	'map_bad_spawn_3.cub'
 	'map_bad_spawn_4.cub'
 	'map_empty_line.cub'
+	'map_too_big.cub'
 	'map_no_spawn.cub'
 	'map_not_closed.cub'
 	'map_not_last.cub'

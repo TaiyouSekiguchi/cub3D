@@ -35,6 +35,10 @@ int		space_check(int **map, int x, int y)
 
 int		close_check(t_game *game, int **map, int x, int y)
 {
+	if (game->re_cnt == 0)
+		error_exit(NULL, "cub3D : Map is too big");
+	game->re_cnt--;
+
 	//map_put(game, map, x, y);
 	if ((x == 0 || x == game->row - 1) || (y == 0 || y == game->col - 1))
 		return (0);

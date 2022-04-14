@@ -88,6 +88,7 @@ typedef struct	s_game
 	t_img		imgs[4];
 	int			floor;
 	int			ceil;
+	int			re_cnt;
 }				t_game;
 
 //prototype declare (filename alphabet order)

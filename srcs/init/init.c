@@ -38,5 +38,6 @@ void	game_init(t_game *game, char *news)
 
 	game->floor = -1;
 	game->ceil = -1;
+	game->re_cnt = 20000;
 	*news = '\0';
 }
