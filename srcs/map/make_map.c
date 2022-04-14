@@ -36,7 +36,7 @@ static int	**map_malloc(int row, int col)
 		j = 0;
 		while (j < col)
 		{
-			map[i][j] = 0;
+			map[i][j] = -2;
 			j++;
 		}
 		i++;
@@ -71,7 +71,7 @@ static void	map_parse(t_game *game, t_list *list, char *news, int col)
 				game->world_map[i][j] = 0;
 			}
 			else if (c == ' ')
-				game->world_map[i][j] = 0;
+				game->world_map[i][j] = -2;
 			else if (c == '0' || c == '1')
 				game->world_map[i][j] = c - '0';
 			else

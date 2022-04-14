@@ -115,6 +115,7 @@ error_file=(
 	'map_no_spawn.cub'
 	'map_not_closed.cub'
 	'map_not_last.cub'
+	'map_space_in_map.cub'
 	'map_space_line.cub'
 	'bad_extension.bad'
 	'tab_delimiter.cub'
@@ -128,3 +129,4 @@ exec_loop
 error_loop >> log/cub3D_test.log
 echo ""
 echo '[ TEST FINISHED!! ]'
+echo ""

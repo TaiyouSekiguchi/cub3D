@@ -78,6 +78,6 @@ int		map_check(t_game *game)
 	map = map_malloc(game);
 	map_copy(game, map);
 	if (!close_check(game, map, game->player.pos_x, game->player.pos_y))
-		error_exit(NULL, "cub3D : Map is not closed");
+		error_exit(NULL, "cub3D : Map is not closed (or enconter space)");
 	map_free(game, map);
 }
