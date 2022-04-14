@@ -120,6 +120,10 @@ error_file=(
 	'map_space_in_map.cub'
 	'map_space_line.cub'
 	'bad_extension.bad'
+	'forbidden_identifier_1.cub'
+	'forbidden_identifier_2.cub'
+	'forbidden_identifier_3.cub'
+	'forbidden_identifier_4.cub'
 	'tab_delimiter.cub'
 	'directory.cub'
 )
