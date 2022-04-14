@@ -77,6 +77,7 @@ function error_loop () {
 file=(
 	'simple.cub'
 	'subject.cub'
+	'standard.cub'
 	'minimum_1.cub'
 	'minimum_2.cub'
 	'small.cub'
