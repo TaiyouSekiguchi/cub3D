@@ -3,6 +3,7 @@ SRCS			=	main.c\
 					close_check.c\
 					color.c\
 					deal_key.c\
+					draw_floor_and_ceilling.c\
 					error_exit.c\
 					extension_check.c\
 					file_info_parse.c\

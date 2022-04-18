@@ -1,61 +1,154 @@
 #include "cub3D.h"
 
-static void	draw_floor_and_ceil(t_game *game)
+void	init_part(t_game *game, t_info *info, int x)
 {
-	unsigned int	color;
-	int				horizon;
-	int				x;
-	int				y;
+	info->cameraX = 2 * x / (double)game->screen_width - 1;
 
-	horizon = game->screen_height / 2;
-	y = 0;
-	while (y < horizon)
+	info->rayDirX = game->player.dir_x + game->player.plane_x * info->cameraX;
+	info->rayDirY = game->player.dir_y + game->player.plane_y * info->cameraX;
+
+	info->mapX = (int)game->player.pos_x;
+	info->mapY = (int)game->player.pos_y;
+
+	info->deltaDistX = fabs(1 / info->rayDirX);
+	info->deltaDistY = fabs(1 / info->rayDirY);
+}
+
+void	get_side_dist(t_game *game, t_info *info)
+{
+	if (info->rayDirX < 0)
 	{
-		x = 0;
-		while (x < game->screen_width)
-		{
-			color = game->floor;
-			my_mlx_pixel_put(&game->img, x, y + horizon, color);
-			color = game->ceil;
-			my_mlx_pixel_put(&game->img, x, y, color);
-			x++;
-		}
-		y++;
+		info->stepX = -1;
+		info->sideDistX = (game->player.pos_x - info->mapX) * info->deltaDistX;
 	}
+	else
+	{
+		info->stepX = 1;
+		info->sideDistX = (info->mapX + 1.0 - game->player.pos_x) * info->deltaDistX;
+	}
+	if (info->rayDirY < 0)
+	{
+		info->stepY = -1;
+		info->sideDistY = (game->player.pos_y - info->mapY) * info->deltaDistY;
+	}
+	else
+	{
+		info->stepY = 1;
+		info->sideDistY = (info->mapY + 1.0 - game->player.pos_y) * info->deltaDistY;
+	}
+}
+
+void	perform_dda(t_game *game, t_info *info)
+{
+	int		hit;
+
+	hit = 0;
+	while (hit == 0)
+	{
+		if (info->sideDistX < info->sideDistY)
+		{
+			info->sideDistX += info->deltaDistX;
+			info->mapX += info->stepX;
+			info->side = 0;
+		}
+		else
+		{
+			info->sideDistY += info->deltaDistY;
+			info->mapY += info->stepY;
+			info->side = 1;
+		}
+		if (game->world_map[info->mapX][info->mapY] > 0)
+			hit = 1;
+	}
+}
+
+void	caluculate_part(t_game *game, t_info *info)
+{
+	if (info->side == 0)
+		info->perpWallDist = (info->mapX - game->player.pos_x + (1 - info->stepX) / 2) / info->rayDirX;
+	else
+		info->perpWallDist = (info->mapY - game->player.pos_y + (1 - info->stepY) / 2) / info->rayDirY;
+	info->lineHeight = (int)(game->screen_height / info->perpWallDist);
+	info->drawStart = -info->lineHeight / 2 + game->screen_height / 2;
+	if (info->drawStart < 0)
+		info->drawStart = 0;
+	info->drawEnd = info->lineHeight / 2 + game->screen_height / 2;
+	if (info->drawEnd >= game->screen_height)
+		info->drawEnd = game->screen_height - 1;
+}
+
+int		get_texture_num(t_info *info)
+{
+	int		texNum;
+
+	if (info->side == 0)
+	{
+		if (info->rayDirX < 0)
+			texNum = 1;
+		else
+			texNum = 3;
+	}
+	else
+	{
+		if (info->rayDirY < 0)
+			texNum = 2;
+		else
+			texNum = 0;
+	}
+	return (texNum);
+}
+
+void	draw_loop(t_game *game, t_info *info, unsigned int texture[4][texWidth * texHeight], int x, int texX)
+{
+	double			step;
+	double			texPos;
+	int				y;
+	int				texY;
+	unsigned int	color;
+	int		texNum;
+
+	texNum = get_texture_num(info);
+	step = 1.0 * texHeight / info->lineHeight;
+	texPos = (info->drawStart - game->screen_height / 2 + info->lineHeight / 2) * step;
+	for (y = info->drawStart; y < info->drawEnd; y++)
+	{
+		texY = (int)texPos & (texHeight - 1);
+		texPos += step;
+		color = game->imgs[texNum].data[texHeight * texY + texX];
+		//color = texture[texNum][texHeight * texY + texX];
+		if (info->side == 1)
+			color = (color >> 1) & 8355711;
+		my_mlx_pixel_put(&game->img, x, y, color);
+	}
+}
+
+void	draw_texture(t_game *game, t_info *info, unsigned int texture[4][texWidth * texHeight], int x)
+{
+	double	wallX;
+	int		texX;
+
+
+	if (info->side == 0)
+		wallX = game->player.pos_y + info->perpWallDist * info->rayDirY;
+	else
+		wallX = game->player.pos_x + info->perpWallDist * info->rayDirX;
+	wallX -= floor((wallX));
+
+	texX = (int)(wallX * (double)(texWidth));
+	if (info->side == 0 && info->rayDirX > 0)
+		texX = texWidth - texX - 1;
+	if (info->side == 1 && info->rayDirY < 0)
+		texX = texWidth - texX - 1;
+	draw_loop(game, info, texture, x, texX);
 }
 
 int		main_loop(t_game *game)
 {
-	double		cameraX;
-	double		rayDirX;
-	double		rayDirY;
-	double		sideDistX;
-	double		sideDistY;
-	double		deltaDistX;
-	double		deltaDistY;
-	double		perpWallDist;
-	double		time;
-	double		oldTime;
-	int			mapX;
-	int			mapY;
-	int			stepX;
-	int			stepY;
-	int			hit;
-	int			side;
-	int			x;
-	int			y;
-	int			w;
-	int			h;
-	int			lineHeight;
-	int			drawStart;
-	int			drawEnd;
-	unsigned int			color;
-	
-	double		*ZBuffer;
+	t_info			info;
+	int				x;
+	int				y;
+	unsigned int	texture[4][texWidth * texHeight];
 
-	ZBuffer = (double *)malloc(sizeof(double) * game->screen_width);
-
-	unsigned int texture[4][texWidth * texHeight];
 	for (x = 0; x < 4; x++)
 	{
 		for (y = 0; y < texWidth * texHeight; y++)
@@ -64,195 +157,18 @@ int		main_loop(t_game *game)
 		}
 	}
 
-	w = 640;
-	h = 480;
-
 	//floor and ceil
 	draw_floor_and_ceil(game);
 
 	//wall
-	for (x = 0; x < w; x++)
+	for (x = 0; x < game->screen_width; x++)
 	{
-		cameraX = 2 * x / (double)w - 1;
-		rayDirX = game->player.dir_x + game->player.plane_x * cameraX;
-		rayDirY = game->player.dir_y + game->player.plane_y * cameraX;
-		mapX = (int)game->player.pos_x;
-		mapY = (int)game->player.pos_y;
-		deltaDistX = fabs(1 / rayDirX);
-		deltaDistY = fabs(1 / rayDirY);
-		hit = 0;
-
-		if (rayDirX < 0)
-		{
-			stepX = -1;
-			sideDistX = (game->player.pos_x - mapX) * deltaDistX;
-		}
-		else
-		{
-			stepX = 1;
-			sideDistX = (mapX + 1.0 - game->player.pos_x) * deltaDistX;
-		}
-
-		if (rayDirY < 0)
-		{
-			stepY = -1;
-			sideDistY = (game->player.pos_y - mapY) * deltaDistY;
-		}
-		else
-		{
-			stepY = 1;
-			sideDistY = (mapY + 1.0 - game->player.pos_y) * deltaDistY;
-		}
-
-		while (hit == 0)
-		{
-			if (sideDistX < sideDistY)
-			{
-				sideDistX += deltaDistX;
-				mapX += stepX;
-				side = 0;
-			}
-			else
-			{
-				sideDistY += deltaDistY;
-				mapY += stepY;
-				side = 1;
-			}
-			if (game->world_map[mapX][mapY] > 0)
-				hit = 1;
-		}
-
-		if (side == 0)
-			perpWallDist = (mapX - game->player.pos_x + (1 - stepX) / 2) / rayDirX;
-		else
-			perpWallDist = (mapY - game->player.pos_y + (1 - stepY) / 2) / rayDirY;
-		lineHeight = (int)(h / perpWallDist);
-
-		drawStart = -lineHeight / 2 + h / 2;
-		if (drawStart < 0)
-			drawStart = 0;
-		drawEnd = lineHeight / 2 + h / 2;
-		if (drawEnd >= h)
-			drawEnd = h - 1;
-
-		//int texNum = game->world_map[mapX][mapY] - 1;
-		int texNum;
-		if (side == 0)
-		{
-			if (rayDirX < 0)
-				texNum = 1;
-			else
-				texNum = 3;
-		}
-		else
-		{
-			if (rayDirY < 0)
-				texNum = 2;
-			else
-				texNum = 0;
-		}
-
-		double wallX;
-		if (side == 0)
-			wallX = game->player.pos_y + perpWallDist * rayDirY;
-		else
-			wallX = game->player.pos_x + perpWallDist * rayDirX;
-		wallX -= floor((wallX));
-
-		int texX = (int)(wallX * (double)(texWidth));
-		if (side == 0 && rayDirX > 0)
-			texX = texWidth - texX - 1;
-		if (side == 1 && rayDirY < 0)
-			texX = texWidth - texX - 1;
-
-		double step = 1.0 * texHeight / lineHeight;
-
-		double texPos = (drawStart - h / 2 + lineHeight / 2) * step;
-		for (y = drawStart; y < drawEnd; y++)
-		{
-			int texY = (int)texPos & (texHeight - 1);
-			texPos += step;
-			color = texture[texNum][texHeight * texY + texX];
-			if (side == 1)
-				color = (color >> 1) & 8355711;
-			my_mlx_pixel_put(&game->img, x, y, color);
-		}
-
-		ZBuffer[x] = perpWallDist;
+		init_part(game, &info, x);
+		get_side_dist(game, &info);
+		perform_dda(game, &info);
+		caluculate_part(game, &info);
+		draw_texture(game, &info, texture, x);
 	}
-
-
-
-
-	/*
-	for (int i = 0; i < game->map_cnt.sprite_cnt; i++)
-	{
-		spriteOrder[i] = i;
-		spriteDistance[i] = ((game->player.pos_x - game->sprite[i].x) * (game->player.pos_x - game->sprite[i].x) + (game->player.pos_y - game->sprite[i].y) * (game->player.pos_y - game->sprite[i].y));
-	}
-
-	sortSprites(spriteOrder, spriteDistance, game->map_cnt.sprite_cnt);
-
-	for (int i = 0; i < game->map_cnt.sprite_cnt; i++)
-	{
-		double spriteX = game->sprite[spriteOrder[i]].x - game->player.pos_x;
-		double spriteY = game->sprite[spriteOrder[i]].y - game->player.pos_y;
-
-		double invDet = 1.0 / (game->player.plane_x * game->player.dir_y - game->player.dir_x * game->player.plane_y);
-
-		double transformX = invDet * (game->player.dir_y * spriteX - game->player.dir_x * spriteY);
-		double transformY = invDet * (-game->player.plane_y * spriteX + game->player.plane_x * spriteY);
-
-		int spriteScreenX = (int)((w / 2) * (1 + transformX / transformY));
-
-#define uDiv 1
-#define vDiv 1
-#define vMove 0.0
-
-		int vMoveScreen = (int)(vMove / transformY);
-
-		int spriteHeight = abs((int)(h / transformY)) / vDiv;
-
-		int drawStartY = -spriteHeight / 2 + h / 2 + vMoveScreen;
-		if (drawStartY < 0)
-			drawStartY = 0;
-		int drawEndY = spriteHeight / 2 + h / 2 + vMoveScreen;
-		if (drawEndY >= h)
-			drawEndY = h - 1;
-
-		int spriteWidth = abs((int) (h / (transformY))) / uDiv;
-		int drawStartX = -spriteWidth / 2 + spriteScreenX;
-		if(drawStartX < 0) drawStartX = 0;
-		int drawEndX = spriteWidth / 2 + spriteScreenX;
-		if(drawEndX >= w) drawEndX = w - 1;
-
-		for(int stripe = drawStartX; stripe < drawEndX; stripe++)
-		{
-			int texX = (int)((256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * texWidth / spriteWidth) / 256);
-			//the conditions in the if are:
-			//1) it's in front of camera plane so you don't see things behind you
-			//2) it's on the screen (left)
-			//3) it's on the screen (right)
-			//4) ZBuffer, with perpendicular distance
-			if(transformY > 0 && stripe > 0 && stripe < w && transformY < ZBuffer[stripe])
-			for(int y = drawStartY; y < drawEndY; y++) //for every pixel of the current stripe
-			{
-				int d = (y-vMoveScreen) * 256 - h * 128 + spriteHeight * 128; //256 and 128 factors to avoid floats
-				int texY = ((d * texHeight) / spriteHeight) / 256;
-				color = texture[game->sprite[spriteOrder[i]].texture][texWidth * texY + texX]; //get current color from the texture
-				if((color & 0x00FFFFFF) != 0)
-					//buffer[y][stripe] = color; //paint pixel if it isn't black, black is the invisible color
-					my_mlx_pixel_put(&game->img, stripe, y, color);
-			}
-		}
-	}
-	*/
-
-
-
 	mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
-	//free(spriteOrder);
-	//free(spriteDistance);
-	free(ZBuffer);
 	return (0);
 }

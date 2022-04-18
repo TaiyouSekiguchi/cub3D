@@ -91,6 +91,29 @@ typedef struct	s_game
 	int			re_cnt;
 }				t_game;
 
+
+typedef struct	s_info
+{
+	double		cameraX;
+	double		rayDirX;
+	double		rayDirY;
+	double		sideDistX;
+	double		sideDistY;
+	double		deltaDistX;
+	double		deltaDistY;
+	double		perpWallDist;
+	int			mapX;
+	int			mapY;
+	int			stepX;
+	int			stepY;
+	int			side;
+	int			lineHeight;
+	int			drawStart;
+	int			drawEnd;
+}				t_info;
+
+
+
 //prototype declare (filename alphabet order)
 
 //close_check.c
@@ -109,6 +132,11 @@ int				color_atoi(char *str);
 
 //deal_key.c
 int				deal_key(int key_code, t_game *game);
+
+
+//draw_floor_and_ceilling.c
+void			draw_floor_and_ceil(t_game *game);
+
 
 //error_exit.c
 void			error_exit(char *cmd, char *msg);
