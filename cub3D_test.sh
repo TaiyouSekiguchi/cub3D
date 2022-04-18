@@ -103,6 +103,8 @@ error_file=(
 	'color_no_num_1.cub'
 	'color_no_num_2.cub'
 	'color_over_intmax.cub'
+	'color_plus_only.cub'
+	'color_minus_only.cub'
 	'color_space_align.cub'
 	'color_too_many_comma.cub'
 	'color_too_many_num.cub'
