@@ -80,6 +80,39 @@ static int	is_info(char *identifier)
 	return (0);
 }
 
+static int	is_permitted_char_in_map(char c)
+{
+	if (c == '0'
+		|| c == '1'
+		|| c == 'N'
+		|| c == 'E'
+		|| c == 'W'
+		|| c == 'S'
+		|| c == ' ')
+		return (1);
+	return (0);
+}
+
+static int	is_map(char **split)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (split[i] != NULL)
+	{
+		j = 0;
+		while (split[i][j] != '\0')
+		{
+			if (!is_permitted_char_in_map(split[i][j]))
+				return (0);
+			j++;
+		}
+		i++;
+	}
+	return(1);
+}
+
 void	file_info_parse(t_game *game, t_list *list, char *news)
 {
 	t_list	*current;
@@ -110,11 +143,13 @@ void	file_info_parse(t_game *game, t_list *list, char *news)
 				else if (ft_strcmp(split[0], "C") == 0)
 					set_color(&game->ceil, split[1]);
 			}
-			else
+			else if (is_map(split))
 			{
 				ft_split_free(split);
 				break ;
 			}
+			else
+				error_exit(NULL, "cub3D : Unknown information");
 			ft_split_free(split);
 		}
 		current = current->next;
