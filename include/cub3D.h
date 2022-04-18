@@ -110,9 +110,17 @@ typedef struct	s_info
 	int			lineHeight;
 	int			drawStart;
 	int			drawEnd;
+	int			texX;
+	int			texY;
 }				t_info;
 
-
+typedef enum e_news
+{
+	NORTH,
+	EAST,
+	SOUTH,
+	WEST,
+}				t_news;
 
 //prototype declare (filename alphabet order)
 
@@ -133,10 +141,14 @@ int				color_atoi(char *str);
 //deal_key.c
 int				deal_key(int key_code, t_game *game);
 
-
 //draw_floor_and_ceilling.c
 void			draw_floor_and_ceil(t_game *game);
 
+//draw_wall.c
+void			draw_wall(t_game *game);
+
+//draw_texture.c
+void			draw_texture(t_game *game, t_info *info, int x);
 
 //error_exit.c
 void			error_exit(char *cmd, char *msg);
