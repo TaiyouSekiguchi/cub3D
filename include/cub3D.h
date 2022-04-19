@@ -19,6 +19,7 @@
 #define texWidth 64
 #define texHeight 64
 
+#define COLOR_MAX 255
 #define RGB_Red 0x00FF0000
 #define RGB_Green 0x0000FF00
 #define RGB_Blue 0x000000FF
@@ -87,6 +88,7 @@ typedef struct	s_game
 	t_img		imgs[4];
 	int			floor;
 	int			ceil;
+	int			re_cnt;
 }				t_game;
 
 //prototype declare (filename alphabet order)
@@ -102,6 +104,9 @@ u_int8_t		get_r(unsigned int trgb);
 u_int8_t		get_g(unsigned int trgb);
 u_int8_t		get_b(unsigned int trgb);
 
+//color_atoi.c
+int				color_atoi(char *str);
+
 //deal_key.c
 int				deal_key(int key_code, t_game *game);
 
@@ -109,7 +114,10 @@ int				deal_key(int key_code, t_game *game);
 void			error_exit(char *cmd, char *msg);
 
 //init.c
-void			game_init(t_game *game);
+void			game_init(t_game *game, char *news);
+
+//is_empty_line.c
+int				is_empty_line(char *line);
 
 //extension_check.c
 int				extension_check(char *file_path);

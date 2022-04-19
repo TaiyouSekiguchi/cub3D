@@ -1,16 +1,24 @@
 #!/bin/bash
 
 function test () {
-	RESULT=`./cub3D error_map/"${error_file[$i]}" 2>&1`
+	RESULT=`./cub3D error_map/"${1}" 2>&1`
+	#RESULT=`valgrind --leak-check=full ./cub3D error_map/"${1}" 2>&1`
 	STATUS=`echo $?`
 	echo "================================================="
-	echo "Test file :" "${error_file[$i]}"
+	echo "Test file :" "${1}"
 	echo ""
-	echo "$RESULT"
-	if [ "$STATUS" != "1" ]; then
-		echo "STATUS is DIFFERENT."
-		echo "STATUS : $STATUS"
+	cat error_map/"${1}" 2>&1
+	echo ""
+	echo "<<<< RESURT >>>>"
+	echo ""
+	if [ "$STATUS" == "1" ]; then
+		echo "STATUS is GOOD!! ;)"
+		echo ""
+	else
+		echo "STATUS is BAAD!! :("
 	fi
+	echo "$RESULT"
+	echo ""
 	echo "================================================="
 	echo ""
 	echo ""
@@ -44,5 +52,5 @@ for (( i = 0; i < ${#error_file[@]}; ++i))
 do
 	test "${error_file[$i]}" >> log/error_test_result.log
 done
-
-echo 'test finished'
+echo ""
+echo '[ TEST FINISHED!! ]'

@@ -1,6 +1,6 @@
 NO ./texture/eagle.xpm
 SO ./texture/redbrick.xpm
-WE ./texture/purplestone.xpm
+WE
 EA ./texture/greystone.xpm
 
 F 140,140,140

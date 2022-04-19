@@ -1,5 +1,5 @@
 NO ./texture/eagle.xpm
-SO ./texture/redbrick.xpm
+SO ./texture/redbrick.xpm ./texture/redbrick.xpm
 WE ./texture/purplestone.xpm
 EA ./texture/greystone.xpm
 

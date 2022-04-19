@@ -1,6 +1,6 @@
 #include "cub3D.h"
 
-static int	**map_alloc(t_game *game)
+static int	**map_malloc(t_game *game)
 {
 	int		**map;
 	int		i;
@@ -12,6 +12,8 @@ static int	**map_alloc(t_game *game)
 	while (i < game->row)
 	{
 		map[i] = (int *)malloc(sizeof(int) * game->col);
+		if (map[i] == NULL)
+			error_exit("malloc", NULL);
 		i++;
 	}
 	return (map);
@@ -73,9 +75,9 @@ int		map_check(t_game *game)
 {
 	int	**map;
 
-	map = map_alloc(game);
+	map = map_malloc(game);
 	map_copy(game, map);
 	if (!close_check(game, map, game->player.pos_x, game->player.pos_y))
-		error_exit(NULL, "Map is not closed.");
+		error_exit(NULL, "cub3D : Map is not closed (or enconter space)");
 	map_free(game, map);
 }
