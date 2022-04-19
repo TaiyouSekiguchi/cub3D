@@ -131,13 +131,13 @@ void	file_info_parse(t_game *game, t_list *list, char *news)
 				if (ft_split_size(split) != 2)
 					error_exit(NULL, "cub3D : Wrong format \"[identifier] [information]\"");
 				if (ft_strcmp(split[0], "NO") == 0)
-					set_texture(game, split[1], 0);
+					set_texture(game, split[1], NORTH);
 				else if (ft_strcmp(split[0], "SO") == 0)
-					set_texture(game, split[1], 1);
+					set_texture(game, split[1], SOUTH);
 				else if (ft_strcmp(split[0], "WE") == 0)
-					set_texture(game, split[1], 2);
+					set_texture(game, split[1], WEST);
 				else if (ft_strcmp(split[0], "EA") == 0)
-					set_texture(game, split[1], 3);
+					set_texture(game, split[1], EAST);
 				else if (ft_strcmp(split[0], "F") == 0)
 					set_color(&game->floor, split[1]);
 				else if (ft_strcmp(split[0], "C") == 0)

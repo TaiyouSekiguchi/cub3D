@@ -68,8 +68,8 @@ static void	map_parse(t_game *game, t_list *list, char *news, int col)
 				if (*news != '\0')
 					error_exit(NULL, "cub3D : Multiple spawn character");
 				*news = c;
-				game->player.pos_x = i;
-				game->player.pos_y = j;
+				game->player.pos_x = i + 0.5;
+				game->player.pos_y = j + 0.5;
 				game->world_map[i][j] = 0;
 			}
 			else if (c == ' ')

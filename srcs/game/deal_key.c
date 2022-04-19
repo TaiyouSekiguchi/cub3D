@@ -9,7 +9,7 @@ int		deal_key(int key_code, t_game *game)
 	double	ver_x;
 	double	ver_y;
 
-	moveSpeed = 0.5;
+	moveSpeed = 0.4242;
 	rotSpeed = 0.08;
 
 	if(key_code == KEY_W)

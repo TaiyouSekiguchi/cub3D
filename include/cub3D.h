@@ -91,6 +91,37 @@ typedef struct	s_game
 	int			re_cnt;
 }				t_game;
 
+
+typedef struct	s_info
+{
+	double		cameraX;
+	double		rayDirX;
+	double		rayDirY;
+	double		sideDistX;
+	double		sideDistY;
+	double		deltaDistX;
+	double		deltaDistY;
+	double		perpWallDist;
+	int			mapX;
+	int			mapY;
+	int			stepX;
+	int			stepY;
+	int			side;
+	int			lineHeight;
+	int			drawStart;
+	int			drawEnd;
+	int			texX;
+	int			texY;
+}				t_info;
+
+typedef enum e_news
+{
+	NORTH,
+	EAST,
+	SOUTH,
+	WEST,
+}				t_news;
+
 //prototype declare (filename alphabet order)
 
 //close_check.c
@@ -109,6 +140,15 @@ int				color_atoi(char *str);
 
 //deal_key.c
 int				deal_key(int key_code, t_game *game);
+
+//draw_floor_and_ceilling.c
+void			draw_floor_and_ceil(t_game *game);
+
+//draw_wall.c
+void			draw_wall(t_game *game);
+
+//draw_texture.c
+void			draw_texture(t_game *game, t_info *info, int x);
 
 //error_exit.c
 void			error_exit(char *cmd, char *msg);
