@@ -177,6 +177,10 @@ void			make_map(t_game *game, t_list *list, char *news);
 //map_check.c
 int				map_check(t_game *game);
 
+//move_and_collision.c
+void			move_x(t_game *game, double dir_x, double moveSpeed);
+void			move_y(t_game *game, double dir_y, double moveSpeed);
+
 //read_file.c
 void			read_file(char *file_name, t_list **list);
 
