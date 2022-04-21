@@ -16,6 +16,7 @@ SRCS			=	main.c\
 					main_loop.c\
 					make_map.c\
 					map_check.c\
+					move_and_collision.c\
 					read_file.c\
 					is_empty_line.c\
 					color_atoi.c\
