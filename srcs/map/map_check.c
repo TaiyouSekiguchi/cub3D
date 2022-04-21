@@ -71,13 +71,30 @@ static void	map_free(t_game *game, int **map)
 	map = NULL;
 }
 
-int		map_check(t_game *game)
+int	map_check(t_game *game)
 {
-	int	**map;
+	int		**map;
+	size_t	x;
+	size_t	y;
 
 	map = map_malloc(game);
 	map_copy(game, map);
-	if (!close_check(game, map, game->player.pos_x, game->player.pos_y))
-		error_exit(NULL, "cub3D : Map is not closed (or enconter space)");
+	y = 0;
+	while (y < game->row)
+	{
+		x = 0;
+		while (x < game->col)
+		{
+			if (map[y][x] == 0)
+			{
+				if (!close_check(game, map, y, x))
+					error_exit(NULL,
+						"cub3D : Map is not closed (or enconter space)");
+				game->re_cnt = 20000;
+			}
+			x += 1;
+		}
+		y += 1;
+	}
 	map_free(game, map);
 }
