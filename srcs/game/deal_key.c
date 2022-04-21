@@ -1,5 +1,49 @@
 #include "cub3D.h"
 
+int		collision_check(t_game *game, double pos_x, double pos_y)
+{
+	double	x;
+	double	y;
+
+	x = pos_x - 0.1;
+	while (x < pos_x + 0.1)
+	{
+		y = pos_y - 0.1;
+		while (y < pos_y + 0.1)
+		{
+			if (game->world_map[(int)x][(int)y] == 1)
+				return (1);
+			y += 0.01;
+		}
+		x += 0.01;
+	}
+	return (0);
+}
+
+void	moving_x(t_game *game, double dir_x, double moveSpeed)
+{
+	while (collision_check(game, game->player.pos_x + dir_x * moveSpeed, game->player.pos_y))
+	{
+		moveSpeed /= 2;
+		if (moveSpeed < 0.1)
+			return ;
+	}
+
+	game->player.pos_x += dir_x * moveSpeed;
+}
+
+void	moving_y(t_game *game, double dir_y, double moveSpeed)
+{
+	while (collision_check(game, game->player.pos_x, game->player.pos_y + dir_y * moveSpeed))
+	{
+		moveSpeed /= 2;
+		if (moveSpeed < 0.1)
+			return ;
+	}
+
+	game->player.pos_y += dir_y * moveSpeed;
+}
+
 int		deal_key(int key_code, t_game *game)
 {
 	double	moveSpeed;
@@ -9,40 +53,33 @@ int		deal_key(int key_code, t_game *game)
 	double	ver_x;
 	double	ver_y;
 
-	moveSpeed = 0.4242;
+	moveSpeed = 0.5;
 	rotSpeed = 0.08;
-
 	if(key_code == KEY_W)
 	{
-		if(game->world_map[(int)(game->player.pos_x + game->player.dir_x * moveSpeed)][(int)(game->player.pos_y)] == 0)
-			game->player.pos_x += game->player.dir_x * moveSpeed;
-		if(game->world_map[(int)(game->player.pos_x)][(int)(game->player.pos_y + game->player.dir_y * moveSpeed)] == 0)
-			game->player.pos_y += game->player.dir_y * moveSpeed;
+		moving_x(game, game->player.dir_x, moveSpeed);
+		moving_y(game, game->player.dir_y, moveSpeed);
 	}
 	else if(key_code == KEY_S)
 	{
-		if(game->world_map[(int)(game->player.pos_x - game->player.dir_x * moveSpeed)][(int)(game->player.pos_y)] == 0)
-			game->player.pos_x -= game->player.dir_x * moveSpeed;
-		if(game->world_map[(int)(game->player.pos_x)][(int)(game->player.pos_y - game->player.dir_y * moveSpeed)] == 0)
-			game->player.pos_y -= game->player.dir_y * moveSpeed;
+		moving_x(game, -game->player.dir_x, moveSpeed);
+		moving_y(game, -game->player.dir_y, moveSpeed);
 	}
 	else if (key_code == KEY_A)
 	{
 		ver_x = game->player.dir_y * -1;
 		ver_y = game->player.dir_x;
-		if(game->world_map[(int)(game->player.pos_x + ver_x * moveSpeed)][(int)(game->player.pos_y)] == 0)
-			game->player.pos_x += ver_x * moveSpeed;
-		if(game->world_map[(int)(game->player.pos_x)][(int)(game->player.pos_y + ver_y * moveSpeed)] == 0)
-			game->player.pos_y += ver_y * moveSpeed;
+
+		moving_x(game, ver_x, moveSpeed);
+		moving_y(game, ver_y, moveSpeed);
 	}
 	else if (key_code == KEY_D)
 	{
 		ver_x = game->player.dir_y;
 		ver_y = game->player.dir_x * -1;
-		if(game->world_map[(int)(game->player.pos_x + ver_x * moveSpeed)][(int)(game->player.pos_y)] == 0)
-			game->player.pos_x += ver_x * moveSpeed;
-		if(game->world_map[(int)(game->player.pos_x)][(int)(game->player.pos_y + ver_y * moveSpeed)] == 0)
-			game->player.pos_y += ver_y * moveSpeed;
+
+		moving_x(game, ver_x, moveSpeed);
+		moving_y(game, ver_y, moveSpeed);
 	}
 	else if(key_code == KEY_RIGHT)
 	{
@@ -65,9 +102,7 @@ int		deal_key(int key_code, t_game *game)
 	else if (key_code == KEY_ESC)
 	{
 		game_free(game);
-		//mlx_destroy_window(game->mlx, game->win);
 		exit(0);
 	}
-	//mlx_put_image_to_window(game->mlx, game->win, game->img.img, 0, 0);
 	return (0);
 }
