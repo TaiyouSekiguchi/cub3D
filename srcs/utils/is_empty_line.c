@@ -1,6 +1,6 @@
 #include "cub3D.h"
 
-int		is_empty_line(char *line)
+int	is_empty_line(char *line)
 {
 	int		i;
 
