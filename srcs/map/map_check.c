@@ -37,7 +37,7 @@ static void	map_copy(t_game *game, int **map)
 	}
 }
 
-static	void map_put(t_game *game, int **map)
+static	void	map_put(t_game *game, int **map)
 {
 	int	i;
 	int	j;
@@ -87,7 +87,7 @@ int	map_check(t_game *game)
 		{
 			if (map[y][x] == 0)
 			{
-				if (!close_check(game, map, y, x))
+				if (!close_check(game, map, x, y))
 					error_exit(NULL,
 						"cub3D : Map is not closed (or enconter space)");
 				game->re_cnt = 20000;
