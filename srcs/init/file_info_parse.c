@@ -65,7 +65,7 @@ static void	set_part(t_game *game, char **split)
 		set_color(&game->ceil, split[1]);
 }
 
-void	file_info_parse(t_game *game, t_list *list, char *news)
+void	file_info_parse(t_game *game, t_list *list)
 {
 	char	**split;
 
@@ -90,5 +90,5 @@ void	file_info_parse(t_game *game, t_list *list, char *news)
 		list = list->next;
 	}
 	parse_check(game);
-	make_map(game, list, news);
+	make_map(game, list);
 }
