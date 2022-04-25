@@ -83,6 +83,11 @@ file=(
 	'small.cub'
 	'big.cub'
 	'map_no_newline.cub'
+	'c_blue_f_green.cub'
+	'c_red_f_black.cub'
+	'favorite_color.cub'
+	'north_barrel.cub'
+	'north_blue_stone.cub'
 )
 
 error_file=(
