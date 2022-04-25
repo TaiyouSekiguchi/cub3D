@@ -34,7 +34,7 @@ static void	do_mlx_get_data_addr(t_game *game, int num)
 		error_exit("mlx", NULL);
 }
 
-int	set_texture(t_game *game, char *path, int num)
+void	set_texture(t_game *game, char *path, int num)
 {
 	if (path == NULL)
 		error_exit(NULL, "cub3D : Texture format \"NO(SO, WE, EA) file_path\"");

@@ -29,15 +29,13 @@ OBJS_DIR		=	./objs
 OBJS			=	$(addprefix $(OBJS_DIR)/, $(SRCS:.c=.o))
 
 CC				=	gcc -g
-#CFLAGS			=	-Wall -Wextra -Werror
+CFLAGS			=	-Wall -Wextra -Werror
 INCLUDE			=	-I./include -I/usr/include -I./mlx_linux
 MINI			=	-Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm
 LIBFT			=	-Llibft -lft
 RM				=	rm -f
 
 .PHONY			:	all clean fclean re
-
-#VPATH		=	srcs:srcs/game:srcs/init:srcs/map:srcs/utils
 
 vpath %.c srcs:srcs/game:srcs/init:srcs/map:srcs/utils
 vpath %.h include
@@ -54,10 +52,12 @@ $(OBJS_DIR)/%.o	:	%.c
 
 clean			:
 					make clean -C libft
+					make clean -C mlx_linux
 					$(RM) $(OBJS)
 
 fclean			:
 					make fclean -C libft
+					make clean -C mlx_linux
 					$(RM) $(OBJS) $(NAME) 
 
 re				:	fclean all

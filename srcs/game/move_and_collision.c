@@ -22,17 +22,15 @@ static int	collision_check(t_game *game, double pos_x, double pos_y)
 
 void	move_x(t_game *game, double dir_x, double move_speed)
 {
-	double	dir_y;
 	double	pos_x;
 	double	pos_y;
 
-	dir_y = game->player.dir_y;
 	pos_x = game->player.pos_x;
 	pos_y = game->player.pos_y;
 	while (collision_check(game, pos_x + dir_x * move_speed, pos_y))
 	{
 		move_speed /= 2;
-		if (move_speed < 0.1)
+		if (move_speed < 0.3)
 			return ;
 	}
 	game->player.pos_x += dir_x * move_speed;
@@ -40,17 +38,15 @@ void	move_x(t_game *game, double dir_x, double move_speed)
 
 void	move_y(t_game *game, double dir_y, double move_speed)
 {
-	double	dir_x;
 	double	pos_x;
 	double	pos_y;
 
-	dir_x = game->player.dir_x;
 	pos_x = game->player.pos_x;
 	pos_y = game->player.pos_y;
 	while (collision_check(game, pos_x, pos_y + dir_y * move_speed))
 	{
 		move_speed /= 2;
-		if (move_speed < 0.1)
+		if (move_speed < 0.3)
 			return ;
 	}
 	game->player.pos_y += dir_y * move_speed;

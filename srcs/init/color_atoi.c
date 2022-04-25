@@ -38,8 +38,7 @@ int	color_atoi(char *str)
 	loop_part(str, &i, &num, minus);
 	if (str[i] != '\0' && !ft_isspace(str[i]))
 		error_exit(NULL, "cub3D : Forbidden character in color");
-	if (minus == 0)
-		return (num);
-	else
+	if (minus != 0)
 		error_exit(NULL, "cub3D : Color range 0~255");
+	return (num);
 }

@@ -2,36 +2,39 @@
 
 static void	init_part(t_game *game, t_info *info, int x)
 {
-	info->cameraX = 2 * x / (double)game->screen_width - 1;
-	info->rayDirX = game->player.dir_x + game->player.plane_x * info->cameraX;
-	info->rayDirY = game->player.dir_y + game->player.plane_y * info->cameraX;
-	info->mapX = (int)game->player.pos_x;
-	info->mapY = (int)game->player.pos_y;
-	info->deltaDistX = fabs(1 / info->rayDirX);
-	info->deltaDistY = fabs(1 / info->rayDirY);
+	info->camera_x = 2 * x / (double)game->screen_width - 1;
+	info->raydir_x = game->player.dir_x + game->player.plane_x * info->camera_x;
+	info->raydir_y = game->player.dir_y + game->player.plane_y * info->camera_x;
+	info->map_x = (int)game->player.pos_x;
+	info->map_y = (int)game->player.pos_y;
+	info->deltadist_x = fabs(1 / info->raydir_x);
+	info->deltadist_y = fabs(1 / info->raydir_y);
 }
 
 static void	get_side_dist(t_player *player, t_info *info)
 {
-	if (info->rayDirX < 0)
+	if (info->raydir_x < 0)
 	{
-		info->stepX = -1;
-		info->sideDistX = (player->pos_x - info->mapX) * info->deltaDistX;
+		info->step_x = -1;
+		info->sidedist_x = (player->pos_x - info->map_x) * info->deltadist_x;
 	}
 	else
 	{
-		info->stepX = 1;
-		info->sideDistX = (info->mapX + 1.0 - player->pos_x) * info->deltaDistX;
+		info->step_x = 1;
+		info->sidedist_x = (info->map_x + 1.0 - player->pos_x)
+			* info->deltadist_x;
 	}
-	if (info->rayDirY < 0)
+	if (info->raydir_y < 0)
 	{
-		info->stepY = -1;
-		info->sideDistY = (player->pos_y - info->mapY) * info->deltaDistY;
+		info->step_y = -1;
+		info->sidedist_y = (player->pos_y - info->map_y)
+			* info->deltadist_y;
 	}
 	else
 	{
-		info->stepY = 1;
-		info->sideDistY = (info->mapY + 1.0 - player->pos_y) * info->deltaDistY;
+		info->step_y = 1;
+		info->sidedist_y = (info->map_y + 1.0 - player->pos_y)
+			* info->deltadist_y;
 	}
 }
 
@@ -42,19 +45,19 @@ static void	perform_dda(t_game *game, t_info *info)
 	hit = 0;
 	while (hit == 0)
 	{
-		if (info->sideDistX < info->sideDistY)
+		if (info->sidedist_x < info->sidedist_y)
 		{
-			info->sideDistX += info->deltaDistX;
-			info->mapX += info->stepX;
+			info->sidedist_x += info->deltadist_x;
+			info->map_x += info->step_x;
 			info->side = 0;
 		}
 		else
 		{
-			info->sideDistY += info->deltaDistY;
-			info->mapY += info->stepY;
+			info->sidedist_y += info->deltadist_y;
+			info->map_y += info->step_y;
 			info->side = 1;
 		}
-		if (game->world_map[info->mapX][info->mapY] > 0)
+		if (game->world_map[info->map_x][info->map_y] > 0)
 			hit = 1;
 	}
 }
@@ -63,18 +66,18 @@ static void	caluc_part(t_game *game, t_info *info, double pos_x, double pos_y)
 {
 	double	*pwd;
 
-	pwd = &info->perpWallDist;
+	pwd = &info->perpwalldist;
 	if (info->side == 0)
-		*pwd = (info->mapX - pos_x + (1 - info->stepX) / 2) / info->rayDirX;
+		*pwd = (info->map_x - pos_x + (1 - info->step_x) / 2) / info->raydir_x;
 	else
-		*pwd = (info->mapY - pos_y + (1 - info->stepY) / 2) / info->rayDirY;
-	info->lineHeight = (int)(game->screen_height / info->perpWallDist);
-	info->drawStart = -info->lineHeight / 2 + game->screen_height / 2;
-	if (info->drawStart < 0)
-		info->drawStart = 0;
-	info->drawEnd = info->lineHeight / 2 + game->screen_height / 2;
-	if (info->drawEnd >= game->screen_height)
-		info->drawEnd = game->screen_height - 1;
+		*pwd = (info->map_y - pos_y + (1 - info->step_y) / 2) / info->raydir_y;
+	info->line_height = (int)(game->screen_height / info->perpwalldist);
+	info->draw_start = -info->line_height / 2 + game->screen_height / 2;
+	if (info->draw_start < 0)
+		info->draw_start = 0;
+	info->draw_end = info->line_height / 2 + game->screen_height / 2;
+	if (info->draw_end >= game->screen_height)
+		info->draw_end = game->screen_height - 1;
 }
 
 void	draw_wall(t_game *game)
