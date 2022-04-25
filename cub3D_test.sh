@@ -81,6 +81,7 @@ file=(
 	'minimum_1.cub'
 	'minimum_2.cub'
 	'small.cub'
+	'big.cub'
 	'map_no_newline.cub'
 )
 
