@@ -37,25 +37,6 @@ static void	map_copy(t_game *game, int **map)
 	}
 }
 
-static	void	map_put(t_game *game, int **map)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < game->row)
-	{
-		j = 0;
-		while (j < game->col)
-		{
-			printf(" %d ", map[i][j]);
-			j++;
-		}
-		printf("\n");
-		i++;
-	}
-}
-
 static void	map_free(t_game *game, int **map)
 {
 	int		i;
@@ -71,11 +52,11 @@ static void	map_free(t_game *game, int **map)
 	map = NULL;
 }
 
-int	map_check(t_game *game)
+void	map_check(t_game *game)
 {
 	int		**map;
-	size_t	x;
-	size_t	y;
+	int		x;
+	int		y;
 
 	map = map_malloc(game);
 	map_copy(game, map);

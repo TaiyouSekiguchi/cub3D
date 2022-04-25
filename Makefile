@@ -29,7 +29,7 @@ OBJS_DIR		=	./objs
 OBJS			=	$(addprefix $(OBJS_DIR)/, $(SRCS:.c=.o))
 
 CC				=	gcc -g
-#CFLAGS			=	-Wall -Wextra -Werror
+CFLAGS			=	-Wall -Wextra -Werror
 INCLUDE			=	-I./include -I/usr/include -I./mlx_linux
 MINI			=	-Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm
 LIBFT			=	-Llibft -lft

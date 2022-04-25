@@ -33,7 +33,6 @@ static void	gnl_loop(int fd, t_list **list)
 {
 	char	*line;
 	int		ret;
-	t_list	*new;
 
 	*list = NULL;
 	ret = get_next_line(fd, &line);
@@ -60,8 +59,6 @@ static void	gnl_loop(int fd, t_list **list)
 void	read_file(char *file_name, t_list **list)
 {
 	int		fd;
-	int		ret;
-	char	*line;
 
 	fd = file_open(file_name);
 	gnl_loop(fd, list);

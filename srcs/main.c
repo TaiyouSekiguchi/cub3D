@@ -6,20 +6,25 @@ void	decide_direction(t_game *game)
 	double	old_dir_x;
 	double	old_plane_x;
 
-	if(game->news != 'N')
+	if (game->news != 'N')
 	{
 		if (game->news == 'E')
 			direction = PI / 2;
 		else if (game->news == 'S')
 			direction = PI;
-		else if (game->news == 'W')
+		else
+		//else if (game->news == 'W')
 			direction = PI * 3 / 2;
 		old_dir_x = game->player.dir_x;
-		game->player.dir_x = game->player.dir_x * cos(-direction) - game->player.dir_y * sin(-direction);
-		game->player.dir_y = old_dir_x * sin(-direction) + game->player.dir_y * cos(-direction);
-		old_plane_x= game->player.plane_x;
-		game->player.plane_x = game->player.plane_x * cos(-direction) - game->player.plane_y * sin(-direction);
-		game->player.plane_y = old_plane_x* sin(-direction) + game->player.plane_y * cos(-direction);
+		game->player.dir_x = game->player.dir_x
+			* cos(-direction) - game->player.dir_y * sin(-direction);
+		game->player.dir_y = old_dir_x * sin(-direction)
+			+ game->player.dir_y * cos(-direction);
+		old_plane_x = game->player.plane_x;
+		game->player.plane_x = game->player.plane_x
+			* cos(-direction) - game->player.plane_y * sin(-direction);
+		game->player.plane_y = old_plane_x * sin(-direction)
+			+ game->player.plane_y * cos(-direction);
 	}
 }
 
@@ -31,10 +36,9 @@ void	file_read_result(t_game *game)
 	printf("screen_height : %d\n", game->screen_height);
 	printf("floor         : %d\n", game->floor);
 	printf("ceil          : %d\n", game->ceil);
-	//map_put(game);
 }
 
-int		main(int argc, char *argv[])
+int	main(int argc, char *argv[])
 {
 	t_game	game;
 	t_list	*list;
