@@ -89,6 +89,7 @@ typedef struct	s_game
 	int			floor;
 	int			ceil;
 	int			re_cnt;
+	char		news;
 }				t_game;
 
 
@@ -154,7 +155,7 @@ void			draw_texture(t_game *game, t_info *info, int x);
 void			error_exit(char *cmd, char *msg);
 
 //init.c
-void			game_init(t_game *game, char *news);
+void			game_init(t_game *game);
 
 //is_empty_line.c
 int				is_empty_line(char *line);
@@ -163,7 +164,7 @@ int				is_empty_line(char *line);
 int				extension_check(char *file_path);
 
 //file_info_parse.c
-void			file_info_parse(t_game *game, t_list *list, char *news);
+void			file_info_parse(t_game *game, t_list *list);
 
 //game_free.c
 void			game_free(t_game *game);
@@ -172,7 +173,7 @@ void			game_free(t_game *game);
 int				main_loop(t_game *game);
 
 //make_map.c
-void			make_map(t_game *game, t_list *list, char *news);
+void			make_map(t_game *game, t_list *list);
 
 //map_check.c
 int				map_check(t_game *game);
