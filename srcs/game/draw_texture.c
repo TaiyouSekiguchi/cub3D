@@ -6,14 +6,14 @@ static int	get_texture_num(t_info *info)
 
 	if (info->side == 0)
 	{
-		if (info->rayDirX < 0)
+		if (info->raydir_x < 0)
 			tex_num = NORTH;
 		else
 			tex_num = SOUTH;
 	}
 	else
 	{
-		if (info->rayDirY < 0)
+		if (info->raydir_y < 0)
 			tex_num = WEST;
 		else
 			tex_num = EAST;
@@ -30,14 +30,14 @@ static void	draw_loop(t_game *game, t_info *info, int x, int h)
 	int				y;
 
 	tex_num = get_texture_num(info);
-	step = 1.0 * TEXHEIGHT / info->lineHeight;
-	tes_pos = (info->drawStart - h / 2 + info->lineHeight / 2) * step;
-	y = info->drawStart;
-	while (y < info->drawEnd)
+	step = 1.0 * TEXHEIGHT / info->line_height;
+	tes_pos = (info->draw_start - h / 2 + info->line_height / 2) * step;
+	y = info->draw_start;
+	while (y < info->draw_end)
 	{
-		info->texY = (int)tes_pos & (TEXHEIGHT - 1);
+		info->tex_y = (int)tes_pos & (TEXHEIGHT - 1);
 		tes_pos += step;
-		color = game->imgs[tex_num].data[TEXHEIGHT * info->texY + info->texX];
+		color = game->imgs[tex_num].data[TEXHEIGHT * info->tex_y + info->tex_x];
 		my_mlx_pixel_put(&game->img, x, y, color);
 		y++;
 	}
@@ -48,14 +48,14 @@ void	draw_texture(t_game *game, t_info *info, int x)
 	double	wall_x;
 
 	if (info->side == 0)
-		wall_x = game->player.pos_y + info->perpWallDist * info->rayDirY;
+		wall_x = game->player.pos_y + info->perpwalldist * info->raydir_y;
 	else
-		wall_x = game->player.pos_x + info->perpWallDist * info->rayDirX;
+		wall_x = game->player.pos_x + info->perpwalldist * info->raydir_x;
 	wall_x -= floor((wall_x));
-	info->texX = (int)(wall_x * (double)(TEXWIDTH));
-	if (info->side == 0 && info->rayDirX > 0)
-		info->texX = TEXWIDTH - info->texX - 1;
-	if (info->side == 1 && info->rayDirY < 0)
-		info->texX = TEXWIDTH - info->texX - 1;
+	info->tex_x = (int)(wall_x * (double)(TEXWIDTH));
+	if (info->side == 0 && info->raydir_x > 0)
+		info->tex_x = TEXWIDTH - info->tex_x - 1;
+	if (info->side == 1 && info->raydir_y < 0)
+		info->tex_x = TEXWIDTH - info->tex_x - 1;
 	draw_loop(game, info, x, game->screen_height);
 }

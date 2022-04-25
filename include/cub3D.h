@@ -38,14 +38,6 @@
 # define DESTROY_NOTIFY 17
 # define NO_EVENT_MASK 0L
 
-//# define FILE_TYPE 0x4D42
-//# define FILE_HEADER_SIZE 14
-//# define INFO_HEADER_SIZE 40
-//# define DEFAULT_HEADER_SIZE (FILE_HEADER_SIZE + INFO_HEADER_SIZE)
-
-//# define mapWidth 24
-//# define mapHeight 24
-
 typedef struct s_pair
 {
 	double		first;
@@ -94,24 +86,24 @@ typedef struct s_game
 
 typedef struct s_info
 {
-	double		cameraX;
-	double		rayDirX;
-	double		rayDirY;
-	double		sideDistX;
-	double		sideDistY;
-	double		deltaDistX;
-	double		deltaDistY;
-	double		perpWallDist;
-	int			mapX;
-	int			mapY;
-	int			stepX;
-	int			stepY;
+	double		camera_x;
+	double		raydir_x;
+	double		raydir_y;
+	double		sidedist_x;
+	double		sidedist_y;
+	double		deltadist_x;
+	double		deltadist_y;
+	double		perpwalldist;
+	int			map_x;
+	int			map_y;
+	int			step_x;
+	int			step_y;
 	int			side;
-	int			lineHeight;
-	int			drawStart;
-	int			drawEnd;
-	int			texX;
-	int			texY;
+	int			line_height;
+	int			draw_start;
+	int			draw_end;
+	int			tex_x;
+	int			tex_y;
 }				t_info;
 
 typedef enum e_news
@@ -123,7 +115,6 @@ typedef enum e_news
 }				t_news;
 
 //prototype declare (filename alphabet order)
-
 //close_check.c
 int				close_check(t_game *game, int **map, int x, int y);
 

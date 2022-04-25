@@ -37,8 +37,6 @@ RM				=	rm -f
 
 .PHONY			:	all clean fclean re
 
-#VPATH		=	srcs:srcs/game:srcs/init:srcs/map:srcs/utils
-
 vpath %.c srcs:srcs/game:srcs/init:srcs/map:srcs/utils
 vpath %.h include
 
@@ -54,10 +52,12 @@ $(OBJS_DIR)/%.o	:	%.c
 
 clean			:
 					make clean -C libft
+					make clean -C mlx_linux
 					$(RM) $(OBJS)
 
 fclean			:
 					make fclean -C libft
+					make clean -C mlx_linux
 					$(RM) $(OBJS) $(NAME) 
 
 re				:	fclean all

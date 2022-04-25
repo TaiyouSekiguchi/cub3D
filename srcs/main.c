@@ -13,7 +13,6 @@ void	decide_direction(t_game *game)
 		else if (game->news == 'S')
 			direction = PI;
 		else
-		//else if (game->news == 'W')
 			direction = PI * 3 / 2;
 		old_dir_x = game->player.dir_x;
 		game->player.dir_x = game->player.dir_x
