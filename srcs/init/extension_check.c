@@ -1,6 +1,6 @@
 #include "cub3D.h"
 
-int		extension_check(char *file_path)
+int	extension_check(char *file_path)
 {
 	size_t	len;
 

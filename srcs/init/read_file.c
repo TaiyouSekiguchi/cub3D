@@ -6,7 +6,7 @@ static void	read_file_exit(int fd, char *msg)
 	error_exit(NULL, msg);
 }
 
-static int file_open(char *file_name)
+static int	file_open(char *file_name)
 {
 	int	fd;
 
@@ -28,7 +28,6 @@ static void	my_lstadd(int fd, t_list **list, char *line)
 	}
 	ft_lstadd_back(list, new);
 }
-
 
 static void	gnl_loop(int fd, t_list **list)
 {

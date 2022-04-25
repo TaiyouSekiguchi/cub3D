@@ -11,27 +11,27 @@ static void	init_part(t_game *game, t_info *info, int x)
 	info->deltaDistY = fabs(1 / info->rayDirY);
 }
 
-static void	get_side_dist(t_game *game, t_info *info)
+static void	get_side_dist(t_player *player, t_info *info)
 {
 	if (info->rayDirX < 0)
 	{
 		info->stepX = -1;
-		info->sideDistX = (game->player.pos_x - info->mapX) * info->deltaDistX;
+		info->sideDistX = (player->pos_x - info->mapX) * info->deltaDistX;
 	}
 	else
 	{
 		info->stepX = 1;
-		info->sideDistX = (info->mapX + 1.0 - game->player.pos_x) * info->deltaDistX;
+		info->sideDistX = (info->mapX + 1.0 - player->pos_x) * info->deltaDistX;
 	}
 	if (info->rayDirY < 0)
 	{
 		info->stepY = -1;
-		info->sideDistY = (game->player.pos_y - info->mapY) * info->deltaDistY;
+		info->sideDistY = (player->pos_y - info->mapY) * info->deltaDistY;
 	}
 	else
 	{
 		info->stepY = 1;
-		info->sideDistY = (info->mapY + 1.0 - game->player.pos_y) * info->deltaDistY;
+		info->sideDistY = (info->mapY + 1.0 - player->pos_y) * info->deltaDistY;
 	}
 }
 
@@ -59,12 +59,15 @@ static void	perform_dda(t_game *game, t_info *info)
 	}
 }
 
-static void	caluculate_part(t_game *game, t_info *info)
+static void	caluc_part(t_game *game, t_info *info, double pos_x, double pos_y)
 {
+	double	*pwd;
+
+	pwd = &info->perpWallDist;
 	if (info->side == 0)
-		info->perpWallDist = (info->mapX - game->player.pos_x + (1 - info->stepX) / 2) / info->rayDirX;
+		*pwd = (info->mapX - pos_x + (1 - info->stepX) / 2) / info->rayDirX;
 	else
-		info->perpWallDist = (info->mapY - game->player.pos_y + (1 - info->stepY) / 2) / info->rayDirY;
+		*pwd = (info->mapY - pos_y + (1 - info->stepY) / 2) / info->rayDirY;
 	info->lineHeight = (int)(game->screen_height / info->perpWallDist);
 	info->drawStart = -info->lineHeight / 2 + game->screen_height / 2;
 	if (info->drawStart < 0)
@@ -79,12 +82,14 @@ void	draw_wall(t_game *game)
 	t_info	info;
 	int		x;
 
-	for (x = 0; x < game->screen_width; x++)
+	x = 0;
+	while (x < game->screen_width)
 	{
 		init_part(game, &info, x);
-		get_side_dist(game, &info);
+		get_side_dist(&game->player, &info);
 		perform_dda(game, &info);
-		caluculate_part(game, &info);
+		caluc_part(game, &info, game->player.pos_x, game->player.pos_y);
 		draw_texture(game, &info, x);
+		x++;
 	}
 }

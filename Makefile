@@ -20,6 +20,9 @@ SRCS			=	main.c\
 					read_file.c\
 					is_empty_line.c\
 					color_atoi.c\
+					set_texture.c\
+					set_color.c\
+					parse_check.c\
 					utils.c
 
 OBJS_DIR		=	./objs
