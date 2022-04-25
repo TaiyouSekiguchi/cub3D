@@ -44,11 +44,29 @@ static int	**map_malloc(int row, int col)
 	return (map);
 }
 
-static void	map_parse(t_game *game, t_list *list, char *news, int col)
+static void	set_world_map(t_game *game, char c, int i, int j)
+{
+	if (c == 'N' || c == 'E' || c == 'W' || c == 'S')
+	{
+		if (game->news != '\0')
+			error_exit(NULL, "cub3D : Multiple spawn character");
+		game->news = c;
+		game->player.pos_x = i + 0.5;
+		game->player.pos_y = j + 0.5;
+		game->world_map[i][j] = 0;
+	}
+	else if (c == ' ')
+		game->world_map[i][j] = -2;
+	else if (c == '0' || c == '1')
+		game->world_map[i][j] = c - '0';
+	else
+		error_exit(NULL, "cub3D : Forbidden character in map");
+}
+
+static void	map_parse(t_game *game, t_list *list)
 {
 	t_list	*current;
 	char	*line;
-	char	c;
 	int		i;
 	int		j;
 
@@ -60,24 +78,9 @@ static void	map_parse(t_game *game, t_list *list, char *news, int col)
 		if (is_empty_line(line))
 			error_exit(NULL, "cub3D : Empty line in map.");
 		j = 0;
-		while (j < col && line[j] != '\0')
+		while (j < game->col && line[j] != '\0')
 		{
-			c = line[j];
-			if (c == 'N' || c == 'E' || c == 'W' || c == 'S')
-			{
-				if (*news != '\0')
-					error_exit(NULL, "cub3D : Multiple spawn character");
-				*news = c;
-				game->player.pos_x = i + 0.5;
-				game->player.pos_y = j + 0.5;
-				game->world_map[i][j] = 0;
-			}
-			else if (c == ' ')
-				game->world_map[i][j] = -2;
-			else if (c == '0' || c == '1')
-				game->world_map[i][j] = c - '0';
-			else
-				error_exit(NULL, "cub3D : Forbidden character in map");
+			set_world_map(game, line[j], i, j);
 			j++;
 		}
 		current = current->next;
@@ -85,16 +88,11 @@ static void	map_parse(t_game *game, t_list *list, char *news, int col)
 	}
 }
 
-void	make_map(t_game *game, t_list *list, char *news)
+void	make_map(t_game *game, t_list *list)
 {
-	int	row;
-	int	col;
-
-	get_row_and_col(list, &row, &col);
-	game->world_map = map_malloc(row, col);
-	map_parse(game, list, news, col);
-	if (*news == '\0')
+	get_row_and_col(list, &game->row, &game->col);
+	game->world_map = map_malloc(game->row, game->col);
+	map_parse(game, list);
+	if (game->news == '\0')
 		error_exit(NULL, "cub3D : No spawn character.");
-	game->row = row;
-	game->col = col;
 }
