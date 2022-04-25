@@ -1,6 +1,6 @@
 #include "cub3D.h"
 
-void	decide_direction(t_game *game)
+static void	decide_direction(t_game *game)
 {
 	double	direction;
 	double	old_dir_x;
@@ -25,16 +25,6 @@ void	decide_direction(t_game *game)
 		game->player.plane_y = old_plane_x * sin(-direction)
 			+ game->player.plane_y * cos(-direction);
 	}
-}
-
-void	file_read_result(t_game *game)
-{
-	printf("player pos_x  : %f\n", game->player.pos_x);
-	printf("player pos_y  : %f\n", game->player.pos_y);
-	printf("screen_width  : %d\n", game->screen_width);
-	printf("screen_height : %d\n", game->screen_height);
-	printf("floor         : %d\n", game->floor);
-	printf("ceil          : %d\n", game->ceil);
 }
 
 int	main(int argc, char *argv[])
