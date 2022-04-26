@@ -1,109 +1,62 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3D.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tsekiguc <tsekiguc@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/04/26 00:01:51 by tsekiguc          #+#    #+#             */
+/*   Updated: 2022/04/26 00:01:53 by tsekiguc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB3D_H
-#define CUB3D_H
+# define CUB3D_H
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <math.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include "mlx.h"
-#include "get_next_line.h"
-#include "libft.h"
+# include <stdio.h>
+# include <string.h>
+# include <stdlib.h>
+# include <math.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include "mlx.h"
+# include "get_next_line.h"
+# include "libft.h"
 
-#define PI 3.14159265359
+# define PI 3.14159265359
 
-#define FLOOR_HORIZONTAL 1
-#define texWidth 64
-#define texHeight 64
+# define FLOOR_HORIZONTAL 1
+# define TEXWIDTH 64
+# define TEXHEIGHT 64
 
-#define RGB_Red 0x00FF0000
-#define RGB_Green 0x0000FF00
-#define RGB_Blue 0x000000FF
-#define RGB_White 0x00FFFFFF
-#define RGB_Yellow 0x00FFFF00
+# define COLOR_MAX 255
+# define RGB_RED 0x00FF0000
+# define RGB_GEEN 0x0000FF00
+# define RGB_BLUE 0x000000FF
+# define RGB_WHITE 0x00FFFFFF
+# define RGB_YELLOW 0x00FFFF00
 
-#define KEY_ESC 0xff1b
-#define KEY_W 0x77
-#define KEY_S 0x73
-#define KEY_A 0x61
-#define KEY_D 0x64
-#define KEY_LEFT 123
-#define KEY_RIGHT 124
+# define KEY_ESC 0xff1b
+# define KEY_W 0x77
+# define KEY_S 0x73
+# define KEY_A 0x61
+# define KEY_D 0x64
+# define KEY_LEFT 0xff51
+# define KEY_RIGHT 0xff53
 
-#define KEY_PRESS 2
-#define DESTROY_NOTIFY 17
-#define NO_EVENT_MASK 0L
+# define KEY_PRESS 2
+# define DESTROY_NOTIFY 17
+# define NO_EVENT_MASK 0L
 
-#define FILE_TYPE 0x4D42
-#define FILE_HEADER_SIZE 14
-#define INFO_HEADER_SIZE 40
-#define DEFAULT_HEADER_SIZE (FILE_HEADER_SIZE + INFO_HEADER_SIZE)
-
-//#define screenWidth 640
-//#define screenHeight 480
-
-#define mapWidth 24
-#define mapHeight 24
-
-
-typedef struct	s_pair
+typedef struct s_pair
 {
 	double		first;
 	int			second;
 }				t_pair;
 
-typedef struct	s_Sprite
-{
-	double		x;
-	double		y;
-	int			texture;
-}				t_Sprite;
-
-
-#pragma pack(2)
-typedef struct	BITMAPFILEHEADER
-{
-	u_int16_t	bfType;
-	u_int32_t	bfSize;
-	u_int16_t	bfReserved1;
-	u_int16_t	bfReserved2;
-	u_int32_t	bfOffBits;
-}				BITMAPFILEHEADER;
-#pragma pack()
-
-typedef struct	BITMAPINFOHEADER
-{
-	u_int32_t	biSize;
-	int32_t		biWidth;
-	int32_t		biHeight;
-	u_int16_t	biPlanes;
-	u_int16_t	biBitCount;
-	u_int32_t	biCompression;
-	u_int32_t	biSizeImage;
-	int32_t		biXPelsPerMeter;
-	int32_t		biYPelsPerMeter;
-	u_int32_t	biClrUsed;
-	u_int32_t	biClrImportant;
-}				BITMAPINFOHEADER;
-
-typedef struct	s_file
-{
-	int			screenWidth;
-	int			screenHeight;
-	int			floor;
-	int			ceil;
-	char		*north;
-	char		*south;
-	char		*east;
-	char		*west;
-	char		*sprite;
-	char		*map;
-}				t_file;
-
-typedef struct	s_img
+typedef struct s_img
 {
 	void		*img;
 	char		*addr;
@@ -115,54 +68,130 @@ typedef struct	s_img
 	int			endian;
 }				t_img;
 
-typedef struct	s_player
+typedef struct s_player
 {
-	double		posX;
-	double		posY;
-	double		dirX;
-	double		dirY;
-	double		planeX;
-	double		planeY;
+	double		pos_x;
+	double		pos_y;
+	double		dir_x;
+	double		dir_y;
+	double		plane_x;
+	double		plane_y;
 }				t_player;
 
-typedef struct	s_counter
-{
-	int			map_max_len;
-	int			map_line_cnt;
-	int			sprite_cnt;
-}				t_counter;
-
-typedef struct	s_game
+typedef struct s_game
 {
 	void		*mlx;
 	void		*win;
-	t_img		img;
+	int			screen_width;
+	int			screen_height;
+	int			**world_map;
+	int			row;
+	int			col;
 	t_player	player;
-	t_file		file;
-	t_counter	map_cnt;
-	t_Sprite	*sprite;
-	int			**worldMap;
-	t_img		imgs[11];
-	//int			worldMap[mapWidth][mapHeight];
+	t_img		img;
+	t_img		imgs[4];
+	int			floor;
+	int			ceil;
+	int			re_cnt;
+	char		news;
 }				t_game;
 
+typedef struct s_info
+{
+	double		camera_x;
+	double		raydir_x;
+	double		raydir_y;
+	double		sidedist_x;
+	double		sidedist_y;
+	double		deltadist_x;
+	double		deltadist_y;
+	double		perpwalldist;
+	int			map_x;
+	int			map_y;
+	int			step_x;
+	int			step_y;
+	int			side;
+	int			line_height;
+	int			draw_start;
+	int			draw_end;
+	int			tex_x;
+	int			tex_y;
+}				t_info;
 
+typedef enum e_news
+{
+	NORTH,
+	EAST,
+	SOUTH,
+	WEST,
+}				t_news;
+
+//prototype declare (filename alphabet order)
+//close_check.c
+int				close_check(t_game *game, int **map, int x, int y);
+
+//color.c
 unsigned int	create_trgb(int t, int r, int g, int b);
-u_int8_t			get_t(unsigned int trgb);
-u_int8_t			get_r(unsigned int trgb);
-u_int8_t			get_g(unsigned int trgb);
-u_int8_t			get_b(unsigned int trgb);
+u_int8_t		get_t(unsigned int trgb);
+u_int8_t		get_r(unsigned int trgb);
+u_int8_t		get_g(unsigned int trgb);
+u_int8_t		get_b(unsigned int trgb);
 
-void			sortSprites(int *order, double *dist, int amount);
+//color_atoi.c
+int				color_atoi(char *str);
 
-void			do_save(t_game *game);
-
+//deal_key.c
 int				deal_key(int key_code, t_game *game);
 
+//draw_floor_and_ceilling.c
+void			draw_floor_and_ceil(t_game *game);
 
-int				my_mlx_pixel_put(t_img *img, int x, int y, int color);
-int				my_close(t_game *game);
+//draw_wall.c
+void			draw_wall(t_game *game);
+
+//draw_texture.c
+void			draw_texture(t_game *game, t_info *info, int x);
+
+//error_exit.c
+void			error_exit(char *cmd, char *msg);
+
+//init.c
+void			game_init(t_game *game);
+
+//is_empty_line.c
+int				is_empty_line(char *line);
+
+//extension_check.c
+int				extension_check(char *file_path);
+
+//file_info_parse.c
+void			file_info_parse(t_game *game, t_list *list);
+
+//game_free.c
+void			game_free(t_game *game);
+
+//main_loop.c
 int				main_loop(t_game *game);
 
+//make_map.c
+void			make_map(t_game *game, t_list *list);
+
+//map_check.c
+void			map_check(t_game *game);
+
+//move_and_collision.c
+void			move_x(t_game *game, double dir_x, double move_speed);
+void			move_y(t_game *game, double dir_y, double move_speed);
+
+//read_file.c
+void			read_file(char *file_name, t_list **list);
+
+void			set_texture(t_game *game, char *path, int num);
+void			set_color(int *color, char *rgb);
+void			parse_check(t_game *game);
+
+//utils.c
+void			my_mlx_pixel_put(t_img *img, int x, int y, int color);
+int				my_close(t_game *game);
 
 #endif

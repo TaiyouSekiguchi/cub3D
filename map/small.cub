@@ -1,0 +1,13 @@
+NO ./texture/eagle.xpm
+SO ./texture/redbrick.xpm
+WE ./texture/purplestone.xpm
+EA ./texture/greystone.xpm
+
+F 140,140,140
+C 155,255,255
+
+11111
+11001
+10001
+10N01
+11111
