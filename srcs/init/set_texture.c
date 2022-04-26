@@ -6,13 +6,11 @@
 /*   By: tsekiguc <tsekiguc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 00:01:21 by tsekiguc          #+#    #+#             */
-/*   Updated: 2022/04/26 00:01:25 by tsekiguc         ###   ########.fr       */
+/*   Updated: 2022/04/26 10:08:29 by tsekiguc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-
-#define ERR_MSG "cub3D : Wrong format \"[identifier] [information]\""
 
 static void	do_mlx_xpm_file_to_image(t_game *game, char *path, int num)
 {

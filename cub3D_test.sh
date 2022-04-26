@@ -76,10 +76,14 @@ function error_loop () {
 
 file=(
 	'simple.cub'
+	'simple_east.cub'
+	'simple_west.cub'
+	'simple_south.cub'
 	'subject.cub'
 	'standard.cub'
 	'minimum_1.cub'
 	'minimum_2.cub'
+	'corner.cub'
 	'small.cub'
 	'big.cub'
 	'map_no_newline.cub'

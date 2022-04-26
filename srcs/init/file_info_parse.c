@@ -6,13 +6,11 @@
 /*   By: tsekiguc <tsekiguc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 00:00:42 by tsekiguc          #+#    #+#             */
-/*   Updated: 2022/04/26 00:00:45 by tsekiguc         ###   ########.fr       */
+/*   Updated: 2022/04/26 10:07:08 by tsekiguc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3D.h"
-
-#define ERR_MSG "cub3D : Wrong format \"[identifier] [information]\""
 
 static int	is_info(char *identifier)
 {
@@ -62,7 +60,8 @@ static int	is_map(char **split)
 static void	set_part(t_game *game, char **split)
 {
 	if (ft_split_size(split) != 2)
-		error_exit(NULL, ERR_MSG);
+		error_exit(NULL,
+			"cub3D : Wrong format \"[identifier] [information]\"");
 	if (ft_strcmp(split[0], "NO") == 0)
 		set_texture(game, split[1], NORTH);
 	else if (ft_strcmp(split[0], "SO") == 0)
