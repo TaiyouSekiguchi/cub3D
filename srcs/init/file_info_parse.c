@@ -6,7 +6,7 @@
 /*   By: tsekiguc <tsekiguc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 00:00:42 by tsekiguc          #+#    #+#             */
-/*   Updated: 2022/04/26 10:07:08 by tsekiguc         ###   ########.fr       */
+/*   Updated: 2022/04/26 17:40:46 by tsekiguc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void	file_info_parse(t_game *game, t_list *list)
 			split = ft_split(list->content, ' ');
 			if (split == NULL)
 				error_exit("malloc", NULL);
+			len_check(split);
 			if (is_info(split[0]))
 				set_part(game, split);
 			else if (is_map(split))

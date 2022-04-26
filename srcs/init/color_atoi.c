@@ -6,7 +6,7 @@
 /*   By: tsekiguc <tsekiguc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 00:00:08 by tsekiguc          #+#    #+#             */
-/*   Updated: 2022/04/26 00:00:09 by tsekiguc         ###   ########.fr       */
+/*   Updated: 2022/04/26 17:08:11 by tsekiguc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ int	color_atoi(char *str)
 	int				i;
 
 	init_part(&num, &minus, &i);
-	while (ft_isspace(str[i]))
-		i++;
+	while (ft_isspace(*str))
+		str++;
 	if (str[i] == '+' || str[i] == '-')
 	{
 		if (str[i] == '-')

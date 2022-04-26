@@ -13,6 +13,7 @@ SRCS			=	main.c\
 					get_next_line.c\
 					get_next_line_utils.c\
 					init.c\
+					len_check.c\
 					main_loop.c\
 					make_map.c\
 					map_check.c\

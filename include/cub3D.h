@@ -6,7 +6,7 @@
 /*   By: tsekiguc <tsekiguc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/26 00:01:51 by tsekiguc          #+#    #+#             */
-/*   Updated: 2022/04/26 00:01:53 by tsekiguc         ###   ########.fr       */
+/*   Updated: 2022/04/26 17:42:16 by tsekiguc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,9 @@ void			file_info_parse(t_game *game, t_list *list);
 
 //game_free.c
 void			game_free(t_game *game);
+
+//len_check.c
+void			len_check(char **split);
 
 //main_loop.c
 int				main_loop(t_game *game);
