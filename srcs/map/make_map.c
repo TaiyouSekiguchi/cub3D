@@ -6,7 +6,7 @@
 /*   By: tkaneshi <tkaneshi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/25 22:51:49 by tkaneshi          #+#    #+#             */
-/*   Updated: 2022/04/25 22:51:50 by tkaneshi         ###   ########.fr       */
+/*   Updated: 2022/04/26 17:17:37 by tsekiguc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	get_row_and_col(t_list *list, int *row, int *col)
 {
 	t_list	*current;
-	int		len;
+	size_t	len;
 
 	*row = 0;
 	*col = 0;
@@ -23,9 +23,13 @@ static void	get_row_and_col(t_list *list, int *row, int *col)
 	while (current != NULL)
 	{
 		*row += 1;
+		if (*row == INT_MAX)
+			error_exit(NULL, "cub3D : Map is too big");
 		len = ft_strlen(current->content);
-		if (*col < len)
-			*col = len;
+		if (len >= INT_MAX)
+			error_exit(NULL, "cub3D : Map is too big");
+		if (*col < (int)len)
+			*col = (int)len;
 		current = current->next;
 	}
 }
