@@ -20,6 +20,7 @@ Xubuntu 18.04
 
 ```bash
 git clone https://github.com/TaiyouSekiguchi/cub3D.git
+cd cub3D
 make
 ./cub3D ./map/standard.cub
 ```
